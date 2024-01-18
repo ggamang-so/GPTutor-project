@@ -8,13 +8,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
-@ToString(callSuper = true)
+@ToString
 @Entity
 public class Chat extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long chat_id;
 
     @Setter
     @ManyToOne(optional = false)
@@ -24,13 +24,13 @@ public class Chat extends AuditingFields {
     protected Chat(){
 
     }
-    private Chat(Long id, UserAccount userAccount) {
-        this.id = id;
+    private Chat(Long chat_id, UserAccount userAccount) {
+        this.chat_id = chat_id;
         this.userAccount = userAccount;
     }
 
-    public static Chat of(Long id, UserAccount userAccount) {
-        return new Chat(id, userAccount);
+    public static Chat of(Long chat_id, UserAccount userAccount) {
+        return new Chat(chat_id, userAccount);
     }
 
     @Override
@@ -38,11 +38,11 @@ public class Chat extends AuditingFields {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chat chat = (Chat) o;
-        return Objects.equals(id, chat.id);
+        return Objects.equals(chat_id, chat.chat_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(chat_id);
     }
 }

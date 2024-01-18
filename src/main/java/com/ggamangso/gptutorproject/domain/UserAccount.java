@@ -11,12 +11,6 @@ import java.util.Objects;
 
 @Getter
 @ToString(callSuper = true)
-@Table(indexes = {
-        @Index(columnList = "userId", unique = true),
-        @Index(columnList = "email", unique = true),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")
-})
 @Entity
 public class UserAccount extends AuditingFields{
 
@@ -25,7 +19,7 @@ public class UserAccount extends AuditingFields{
     private String user_id;
 
     @Setter @Column(nullable = false)private String user_password;
-    @Setter @Column(nullable = false) private String user_role;
+    @Setter @Column(nullable = false) private String authority;
     @Setter @Column(length = 100) private String email;
     @Setter @Column(length = 100) private String nickname;
     @Setter @Column(length = 1000)private String memo;
@@ -33,17 +27,17 @@ public class UserAccount extends AuditingFields{
     protected UserAccount() {
     }
 
-    private UserAccount(String user_id, String user_password, String user_role, String email, String nickname, String memo) {
+    private UserAccount(String user_id, String user_password, String authority, String email, String nickname, String memo) {
         this.user_id = user_id;
         this.user_password = user_password;
-        this.user_role = user_role;
+        this.authority = authority;
         this.email = email;
         this.nickname = nickname;
         this.memo = memo;
     }
 
-    public static UserAccount of(String user_id, String user_password, String user_role, String email, String nickname, String memo){
-        return new UserAccount(user_id, user_password, user_role, email, nickname, memo);
+    public static UserAccount of(String user_id, String user_password, String authority, String email, String nickname, String memo){
+        return new UserAccount(user_id, user_password, authority, email, nickname, memo);
     }
 
     @Override
