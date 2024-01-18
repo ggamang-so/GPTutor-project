@@ -20,11 +20,11 @@ public abstract class AuditingFields {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)//데이트 타임 포메팅
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    protected LocalDateTime createdAt; //생성일지
+    protected LocalDateTime created_at; //생성일지
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)//데이트 타임 포메팅
     @CreatedDate
     @Column(nullable = false)
-    protected LocalDateTime updatedAt; // 수정일시
+    protected LocalDateTime updated_at; // 수정일시
 
 }
