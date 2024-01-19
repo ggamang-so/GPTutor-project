@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#test" th:text="${chats[0].content}" />
+</thlogic>
