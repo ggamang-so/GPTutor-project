@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
 <thlogic>
-    <attr sel="#test" th:text="${chats[0].content}" />
+    <attr sel="#test" th:each="chat : ${chats}">
+        <attr sel="#first_message"  th:text="${chat.firstMessage}"/>
+    </attr>
 </thlogic>
