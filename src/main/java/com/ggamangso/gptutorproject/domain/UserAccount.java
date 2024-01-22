@@ -1,6 +1,7 @@
 package com.ggamangso.gptutorproject.domain;
 
 
+import com.ggamangso.gptutorproject.constant.AuthorityType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,10 +17,10 @@ public class UserAccount extends AuditingFields{
 
     @Id
     @Column(length = 50)
-    private String user_id;
+    private String userId;
 
-    @Setter @Column(nullable = false)private String user_password;
-    @Setter @Column(nullable = false) private String authority;
+    @Setter @Column(nullable = false)private String userPassword;
+    @Setter @Enumerated(EnumType.STRING) @Column(nullable = false) private AuthorityType authority;
     @Setter @Column(length = 100) private String email;
     @Setter @Column(length = 100) private String nickname;
     @Setter @Column(length = 1000)private String memo;
@@ -27,17 +28,17 @@ public class UserAccount extends AuditingFields{
     protected UserAccount() {
     }
 
-    private UserAccount(String user_id, String user_password, String authority, String email, String nickname, String memo) {
-        this.user_id = user_id;
-        this.user_password = user_password;
+    private UserAccount(String user_id, String userPassword, AuthorityType authority, String email, String nickname, String memo) {
+        this.userId = user_id;
+        this.userPassword = userPassword;
         this.authority = authority;
         this.email = email;
         this.nickname = nickname;
         this.memo = memo;
     }
 
-    public static UserAccount of(String user_id, String user_password, String authority, String email, String nickname, String memo){
-        return new UserAccount(user_id, user_password, authority, email, nickname, memo);
+    public static UserAccount of(String userId, String userPassword, AuthorityType authority, String email, String nickname, String memo){
+        return new UserAccount(userId, userPassword, authority, email, nickname, memo);
     }
 
     @Override
@@ -45,11 +46,11 @@ public class UserAccount extends AuditingFields{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAccount that = (UserAccount) o;
-        return Objects.equals(user_id, that.user_id);
+        return Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user_id);
+        return Objects.hash(userId);
     }
 }

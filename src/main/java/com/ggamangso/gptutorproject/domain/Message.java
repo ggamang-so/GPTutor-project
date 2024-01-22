@@ -1,5 +1,6 @@
 package com.ggamangso.gptutorproject.domain;
 ;
+import com.ggamangso.gptutorproject.constant.MessageType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,30 +18,30 @@ public class Message extends AuditingFields {
 
     @Setter
     @ManyToOne(optional = false)
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chatId")
     private Chat chat; // 유저 정보(ID)
 
-    @Setter @Column(nullable = false) private String role;
+    @Setter @Enumerated(EnumType.STRING) @Column(nullable = false) private MessageType role;
     @Setter @Column(nullable = false) private String content;
-    @Setter private String corrected_content;
-    @Setter @Column(nullable = false) private Boolean is_bookmarked;
-    @Setter private String message_memo;
+    @Setter @Column(name="corrected_Content") private String correctedContent;
+    @Setter @Column(name="is_bookmarked",nullable = false) private Boolean isBookmarked;
+    @Setter @Column(name="message_memo") private String messageMemo;
 
 
 
     protected Message(){
 
     }
-    private Message(Chat chat, String role, String content, String corrected_content, Boolean is_bookmarked, String message_memo) {
+    private Message(Chat chat, MessageType role, String content, String correctedContent, Boolean isBookmarked, String messageMemo) {
         this.chat = chat;
         this.role = role;
         this.content = content;
-        this.corrected_content = corrected_content;
-        this.is_bookmarked = is_bookmarked;
-        this.message_memo = message_memo;
+        this.correctedContent = correctedContent;
+        this.isBookmarked = isBookmarked;
+        this.messageMemo = messageMemo;
     }
 
-    public static Message of(Chat chat, String role, String content, String corrected_content, Boolean is_bookmarked, String message_memo) {
-        return new Message(chat, role, content, corrected_content, is_bookmarked, message_memo);
+    public static Message of(Chat chat, MessageType role, String content, String corrected_content, Boolean isBookmarked, String messageMemo) {
+        return new Message(chat, role, content, corrected_content, isBookmarked, messageMemo);
     }
 }
