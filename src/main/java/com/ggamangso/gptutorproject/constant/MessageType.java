@@ -7,10 +7,12 @@ public enum MessageType {
     ASSISTANT("assistant"),
     USER("user");
 
-    @Getter
-    private final String description;
+      @Getter
+    private final String value;
 
-    MessageType(String description){
-        this.description = description;
+    MessageType( String value) {
+        this.value = value;
     }
+
+
 }

@@ -3,13 +3,13 @@ package com.ggamangso.gptutorproject.constant;
 import lombok.Getter;
 
 public enum AuthorityType {
-    USER("Role_User"),
-    ADMIN("Role_Admin");
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN");
 
     @Getter
-    private final String description;
+    private final String value;
 
-    AuthorityType(String description){
-        this.description = description;
+    AuthorityType(String value){
+        this.value = value;
     }
 }
