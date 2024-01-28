@@ -1,0 +1,31 @@
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+main {
+    height: 100vh;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+
+}
+.chat_container{
+    display: grid;
+    grid-template-columns: 380px auto;
+    width:100vw;
+    height: 100vh;
+}
+.bg-body-tertiary{
+    border-right: solid 2px dimgray;
+    flex :1 1 0;
+    height: 100%;
+}
+footer,header{
+    width: 100vw;
+}

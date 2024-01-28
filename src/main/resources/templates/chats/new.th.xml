@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <thlogic>
-    <attr sel="#test" th:each="chat : ${chats}">
-        <attr sel="#first_message"  th:text="${chat.firstMessage}"/>
+    <attr sel="#header" th:replace="header :: header" />
+    <attr sel="#footer" th:replace="footer :: footer" />
+
+    <attr sel="#chat_list" th:remove="all-but-first">
+        <attr sel="a" th:each="chat : ${chats}" th:href="'/chats/'+${chat.chatId}">
+            <attr sel="div[0]">
+                <attr sel="small" th:datetime="${chat.updated_at}" th:text="${#temporals.format(chat.updated_at, 'yyyy-MM-dd')}"/>
+            </attr>
+            <attr sel="div[1]" th:text="${chat.firstMessage}"/>
+        </attr>
+    </attr>
+    <attr sel="#messages_list">
+        <attr sel="div" th:each=" message : ${messages}" th:text="${message.content}"/>
     </attr>
 </thlogic>

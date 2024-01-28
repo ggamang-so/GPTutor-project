@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="quest" th:text="${quest}"/>
+    <attr sel="#response"  th:text="${response}"/>
+
+</thlogic>
