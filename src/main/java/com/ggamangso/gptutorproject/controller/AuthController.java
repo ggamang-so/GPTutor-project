@@ -1,7 +1,5 @@
 package com.ggamangso.gptutorproject.controller;
 
-import com.ggamangso.gptutorproject.domain.dto.ChatDto;
-import com.ggamangso.gptutorproject.domain.dto.MessageDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,17 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AuthController {
 
+    @GetMapping("/index")
+    public String indexView(){
+        return "/index";
+    }
     @GetMapping("/login")
     public String loginView() {
-        return "/login";
+        return "authorization/login";
     }
 
-    @GetMapping("signup")
+    @GetMapping("/signup")
     public String signupView(){
-        return "/signup";
+        return "authorization/signup";
     }
 
-    @GetMapping("mypage")
+    @GetMapping("/mypage")
     public String myPageView(ModelMap map){
         map.addAttribute("Messages", "messageDto");
 

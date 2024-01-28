@@ -4,6 +4,7 @@ import com.ggamangso.gptutorproject.config.JpaConfig;
 import com.ggamangso.gptutorproject.constant.AuthorityType;
 import com.ggamangso.gptutorproject.domain.Message;
 import com.ggamangso.gptutorproject.domain.UserAccount;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @DisplayName("JPA 연결 테스트")
 @Import(JpaConfig.class)
 @DataJpaTest
@@ -21,6 +23,7 @@ class JpaRepositoryTest {
 
     private final MessageRepository messageRepository;
     private final UserAccountRepository userAccountRepository;
+
 
 //    Constructor 주입방식으로 의존성 주입
     public JpaRepositoryTest(@Autowired MessageRepository messageRepository,

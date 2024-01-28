@@ -24,9 +24,9 @@ public record UserAccountDto(
         return new UserAccountDto(userId, userPassword, authority, email, nickname, memo, created_at, updated_at);
     }
 
-    public static UserAccountDto of(String userPassword, AuthorityType authority, String email, String nickname, String memo )
+    public static UserAccountDto of(String userId, String userPassword, AuthorityType authority, String email, String nickname, String memo )
     {
-        return new UserAccountDto(null, userPassword, authority, email, nickname, memo, null,null);
+        return new UserAccountDto(userId, userPassword, authority, email, nickname, memo, null,null);
     }
 
     public static UserAccountDto from(UserAccount entity){
