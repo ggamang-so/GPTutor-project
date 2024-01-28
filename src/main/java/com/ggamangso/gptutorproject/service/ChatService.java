@@ -29,6 +29,12 @@ public class ChatService {
                 .toList();
     }
 
+    @Transactional
+    public ChatDto searchChat(String firstMessage){
+        return ChatDto.from(chatRepository.findByFirstMessage(firstMessage));
+    }
+
+
     public void deleteChat(Long chatId, String userId) {
         Chat chat = chatRepository.getReferenceByChatId(chatId);
         chatRepository.deleteByChatIdAndUserAccount_UserId(chatId, userId);
@@ -36,9 +42,21 @@ public class ChatService {
 
     }
 
-    public void saveChat(ChatDto chatDto) {
+    public long saveChat(ChatDto chatDto) {
         UserAccount userAccount = userAccountRepository.getReferenceById(chatDto.userAccountDto().userId());
         Chat chat = chatDto.toEntity(userAccount);
-        chatRepository.save(chat);
+        System.out.println(chat.getChatId());
+        long chatId = chatRepository.saveAndReturnChatId(chat);
+        System.out.println(chat.getChatId());
+        return chatId;
+
     }
+
+
+
+
+
+
+
+
 }

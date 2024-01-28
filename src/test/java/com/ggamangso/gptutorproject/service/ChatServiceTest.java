@@ -1,5 +1,6 @@
 package com.ggamangso.gptutorproject.service;
 
+import com.ggamangso.gptutorproject.config.OpenAIConfig;
 import com.ggamangso.gptutorproject.constant.AuthorityType;
 import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -27,6 +29,7 @@ import static org.mockito.BDDMockito.*;
 
 @DisplayName("비즈니스 로직 - 채팅")
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class ChatServiceTest {
 
     @InjectMocks
@@ -38,6 +41,10 @@ class ChatServiceTest {
     private MessageRepository messageRepository;
     @Mock
     private UserAccountRepository userAccountRepository;
+    @Mock
+    private GoogleSTTService googleSTTService;
+    @Mock
+    private OpenAIService openAIService;
 
     @DisplayName("유저아이디로 접속시,채팅 목록을 반환한다. ")
     @Test
@@ -85,17 +92,15 @@ class ChatServiceTest {
         String userId = "ggamangso";
         ChatDto chatDto = createChatDto(userId, firstMessage);
         given(userAccountRepository.getReferenceById(chatDto.userAccountDto().userId())).willReturn(createUserAccount());
-        given(chatRepository.save(any(Chat.class))).willReturn(createChat());
-
+        given(chatRepository.saveAndReturnChatId(any(Chat.class))).willReturn(anyLong());
     //When
         sut.saveChat(chatDto);
     //Then
         then(userAccountRepository).should().getReferenceById(chatDto.userAccountDto().userId());
-        then(chatRepository).should().save(any(Chat.class));
+        then(chatRepository).should().saveAndReturnChatId(any(Chat.class));
+
 
     }
-
-
 
 
     //fixture

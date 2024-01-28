@@ -1,7 +1,9 @@
 
 server:
   port: 9090
----
+
+
+
 debug: false
 management.endpoints.web.exposure.include: "*"
 
@@ -25,7 +27,9 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
     open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   sql.init.mode: always
+
 
   data.rest:
     base-path: /api
@@ -33,3 +37,4 @@ spring:
   thymeleaf3:
    decoupled-logic: true
 
+openAI_key: ${API_KEY}
