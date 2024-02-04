@@ -43,10 +43,17 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    //Google STT API 라이브러리 주입
+    implementation 'com.google.cloud:google-cloud-speech:4.28.0'
 
     //mysql, mariadb 의존성 주입
+    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+
+    //
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     //queryDSL 설정
     implementation 'com.querydsl:querydsl-jpa'

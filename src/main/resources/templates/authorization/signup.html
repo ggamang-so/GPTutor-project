@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="application/x-www-form-urlencoded;charset=UTF-8">
+    <title>회원 가입</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/signup.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+            $('#duplicate_check_button').click(function () {
+                let userId = $("#userId").val()
+                if(userId===""){
+                    alert("ID를 입력해주세요.")
+                    return false;}
+                console.log(userId)
+                $.ajax({
+                    url: '/signup/duplicate_check', // 실제 AJAX 요청을 처리할 엔드포인트
+                    type: 'POST',
+                    data: {"userId": userId},// 또는 'POST', 요청 유형에 따라 설정
+                    success: function (response) {
+                        console.log(typeof response) // 요청 결과를 표시할 요소
+                        if (response > 0) {
+                            alert("이미 사용중인 ID 입니다.");
+                        } else {
+                            $("#duplicate_check_button").css('display', 'none');
+                            $("#duplicate_check_label").css('display', 'block');
+                            $("#duplicate_checked").val("checked");
+                        }
+                    },
+                    error: function () {
+                        alert('에러 발생');
+                    }
+                });
+            });
+
+            $("#userId").on("keyup", function () {
+                $("#duplicate_check_button").css('display', 'block');
+                $("#duplicate_check_label").css('display', 'none');
+                $("#duplicate_checked").val("unchecked");
+            })
+
+        });
+
+        function signup_submit() {
+            let userPassword = document.getElementById("password").value;
+            let repeat = document.getElementById("password-repeat").value;
+            let duplicateCheck = document.getElementById("duplicate_checked").value;
+            if (duplicateCheck !== 'checked') {
+                alert("ID 중복검사를 진행해 주세요.")
+                return false;
+            }
+            if (userPassword !== repeat) {
+                alert("입력하신 비밀번호와 비밀번호 확인이 같지 않습니다. 다시 확인해주세요")
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+<header id="header">
+    header 템플릿 삽입부
+    <hr>
+</header>
+
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <h2>회원가입</h2>
+            <p class="lead"> Gptutor 서비스 이용을 위해서 회원가입을 진행합니다. </p>
+        </div>
+
+        <div class="row g-5 justify-content-center">
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">정보 입력</h4>
+                <form method="post" action="/signup/form" onsubmit="return signup_submit()">
+                    <div class="row g-3">
+                        <div class="col-sm-8">
+                            <label for="userId" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="ID를 입력하세요."
+                                   required>
+                        </div>
+
+                        <div class="col-sm-4 align-content-lg-end">
+                            <button class="w-50 btn btn-primary" type="button" id="duplicate_check_button"> 중복검사
+                            </button>
+                            <span class="text-body-secondary" id="duplicate_check_label">중복검사 완료</span>
+                            <input type="hidden" value="unchecked" id="duplicate_checked">
+
+                        </div>
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group has-validation">
+                                <input type="password" class="form-control" id="password" name="userPassword"
+                                       placeholder="비밀번호를 입력해주세요"
+                                       required minlength="8">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="password-repeat" class="form-label">Password repeat</label>
+                            <div class="input-group has-validation">
+                                <input type="password" class="form-control" id="password-repeat"
+                                       placeholder="비밀번호를 다시한번 입력해주세요."
+                                       required>
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email <span
+                                    class="text-body-secondary">(Optional)</span></label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <input type="hidden" name="authority" value="USER"/>
+                        </div>
+                        <div class="col-12">
+                            <label for="nickname" class="form-label">Nickname<span
+                                    class="text-body-secondary">(Optional)</span></label>
+                            <input type="text" class="form-control" id="nickname" name="nickname">
+                        </div>
+                        <div class="col-12">
+                            <label for="memo" class="form-label">memo<span
+                                    class="text-body-secondary">(Optional)</span></label>
+                            <textarea class="form-control col-12" id="memo" name="memo" rows="3"></textarea>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">가입하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+<footer id="footer">
+    <hr>
+    footer 템플릿 삽입부
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+</html>

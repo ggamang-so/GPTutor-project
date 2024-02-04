@@ -28,8 +28,8 @@ public class UserAccount extends AuditingFields{
     protected UserAccount() {
     }
 
-    private UserAccount(String user_id, String userPassword, AuthorityType authority, String email, String nickname, String memo) {
-        this.userId = user_id;
+    private UserAccount(String userId, String userPassword, AuthorityType authority, String email, String nickname, String memo) {
+        this.userId = userId;
         this.userPassword = userPassword;
         this.authority = authority;
         this.email = email;

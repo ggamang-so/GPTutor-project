@@ -21,6 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,8 +50,8 @@ class MessageServiceTest {
         //When
         List<MessageDto> actual = sut.searchMessages(chatId);
         //Then
-        assertThat(actual).hasSize(2);
-        assertThat(actual)
+        assertThat(actual).asList().hasSize(2);
+        assertThat(actual).asList()
                 .extracting("id")
                 .containsExactlyInAnyOrder(1L, 2L);
         then(messageRepository).should().findByChat_ChatId(chatId);
@@ -75,7 +76,7 @@ class MessageServiceTest {
     @Test
     void givenAPIResponse_whenSavingResponseMessage_thenSavesMessage () {
         //Given
-        MessageDto messageDto = createMessageDto("message_content",MessageType.ASSISTANT);
+        MessageDto messageDto = createMessageDto("message_content",MessageType.ASSISTANT.getValue());
         given(chatRepository.getReferenceById(messageDto.chatDto().chatId())).willReturn(createChat());
         given(messageRepository.save(any(Message.class))).willReturn(null);
 
@@ -90,7 +91,7 @@ class MessageServiceTest {
     @Test
     void givenAPIResponse_whenSavingResponseMessage_thenSavesCorrectContentInMessage () {
         //Given
-        MessageDto messageDto = createMessageDto("message_content",MessageType.ASSISTANT);
+        MessageDto messageDto = createMessageDto("message_content",MessageType.ASSISTANT.getValue());
         given(chatRepository.getReferenceById(messageDto.chatDto().chatId())).willReturn(createChat());
         given(messageRepository.save(any(Message.class))).willReturn(null);
 
@@ -116,9 +117,9 @@ class MessageServiceTest {
     }
 
     private MessageDto createMessageDto(String messageContent) {
-        return createMessageDto(messageContent, MessageType.USER);
+        return createMessageDto(messageContent, MessageType.USER.getValue());
     }
-    private MessageDto createMessageDto(String messageContent, MessageType role) {
+    private MessageDto createMessageDto(String messageContent, String role) {
         return MessageDto.of(
                 1L,
                 createChatDto(),
@@ -148,7 +149,7 @@ class MessageServiceTest {
         return UserAccountDto.of(
                 "ggamangso",
                 "test1234",
-                AuthorityType.USER,
+                AuthorityType.USER.getValue(),
                 "test@mail.com",
                 "ggamang",
                 null,
