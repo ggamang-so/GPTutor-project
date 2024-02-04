@@ -13,23 +13,22 @@ import java.util.stream.Collectors;
 public record TutorPrincipal(
         String username,
         String userPassword,
-        AuthorityType authority,
+        String authority,
         Collection<? extends GrantedAuthority> authorities,
         String email,
         String nickname,
         String memo
 ) implements UserDetails {
 
-    public static TutorPrincipal of(String username, String userPassword, AuthorityType authority, String email, String nickname, String memo) {
+    public static TutorPrincipal of(String username, String userPassword, String authority, String email, String nickname, String memo) {
         // 지금은 인증만 하고 권한을 다루고 있지 않아서 임의로 세팅한다.
-        Set<AuthorityType> authorityTypes = Set.of(AuthorityType.USER, AuthorityType.ADMIN);
+        Set<String> authorityTypes = Set.of(AuthorityType.USER.getValue(), AuthorityType.ADMIN.getValue());
 
         return new TutorPrincipal(
                 username,
                 userPassword,
                 authority,
                 authorityTypes.stream()
-                        .map(AuthorityType::getValue)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toUnmodifiableSet()),
                 email,
@@ -69,6 +68,7 @@ public record TutorPrincipal(
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
+
 
 
 }

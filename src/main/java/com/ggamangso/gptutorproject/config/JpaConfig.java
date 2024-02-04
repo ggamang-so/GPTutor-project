@@ -15,14 +15,17 @@ import java.util.Optional;
 @Configuration
 public class JpaConfig {
 
+
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(TutorPrincipal.class::cast)
-                .map(TutorPrincipal::getUsername);
+        return () -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (null == authentication || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+                return Optional.empty();
+            }
+            TutorPrincipal principal = (TutorPrincipal) authentication.getPrincipal();
+            return Optional.of(principal.getUsername());
+        };
     }
 
 }

@@ -11,7 +11,15 @@
             <attr sel="div[1]" th:text="${chat.firstMessage}"/>
         </attr>
     </attr>
-    <attr sel="#messages_list">
-        <attr sel="div" th:each=" message : ${messages}" th:text="${message.content}"/>
+    <attr sel="#messages_list" th:object="${messages}" th:remove="all-but-first">
+        <attr sel=".chat-role" th:each="message : ${messages}" th:class="${message.role}=='user'?'chat-message-right pb-4':'chat-message-left pb-4'">
+            <attr sel="div[0]">
+                <attr sel="div" th:text="${#temporals.format(message.created_at, 'HH:mm')}"/>
+            </attr>
+            <attr sel="div[1]">
+                <attr sel="div" th:text="${message.role}"/>
+                <attr sel=".chat-content" th:text="${message.content}"/>
+            </attr>
+        </attr>
     </attr>
 </thlogic>

@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -45,8 +48,11 @@ public class ChatController {
 
     @GetMapping("/chats/{chatId}")
     public String chats(@PathVariable Long chatId, ModelMap map,
-                        @AuthenticationPrincipal TutorPrincipal tutorPrincipal) {
-        String userId = tutorPrincipal.getUsername(); // 추후 @AuthenticationPrincipal 넣어서 교체 예정
+                        @AuthenticationPrincipal TutorPrincipal tutorPrincipal) throws Exception {
+        String userId = tutorPrincipal.getUsername();
+        if(!chatService.searchChat(chatId).userAccountDto().userId().equals(userId)){
+           return "redirect:/chats";
+        }
         List<ChatDto> chats = chatService.searchChats(userId);
         map.addAttribute("chats", chats);
         List<MessageDto> messages = messageService.searchMessages(chatId);

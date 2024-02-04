@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public record MessageDto(
         Long id,
         ChatDto chatDto,
-        MessageType role,
+        String role,
         String content,
         String correctedContent,
         Boolean isBookmarked,
@@ -20,12 +20,12 @@ public record MessageDto(
         LocalDateTime created_at,
         LocalDateTime updated_at
 ){
-    public static MessageDto of(ChatDto chatDto, MessageType role, String content,String correctedContent,
+    public static MessageDto of(ChatDto chatDto, String role, String content,String correctedContent,
                                 Boolean isBookmarked, String messageMemo){
         return new MessageDto(null,chatDto, role, content, correctedContent, isBookmarked, messageMemo, null, null);
     }
 
-    public static MessageDto of(Long id, ChatDto chatDto, MessageType role, String content, String correctedContent, Boolean isBookmarked, String messageMemo, LocalDateTime created_at, LocalDateTime updated_at) {
+    public static MessageDto of(Long id, ChatDto chatDto, String role, String content, String correctedContent, Boolean isBookmarked, String messageMemo, LocalDateTime created_at, LocalDateTime updated_at) {
         return new MessageDto(id, chatDto, role, content, correctedContent, isBookmarked, messageMemo, created_at, updated_at);
     }
 
@@ -33,7 +33,7 @@ public record MessageDto(
         return new MessageDto(
                 entity.getId(),
                 ChatDto.from(entity.getChat()),
-                entity.getRole(),
+                entity.getRole().getValue(),
                 entity.getContent(),
                 entity.getCorrectedContent(),
                 entity.getIsBookmarked(),
@@ -44,7 +44,7 @@ public record MessageDto(
     }
 
     public Message toEntity(Chat chat){
-        return Message.of(chat, role, content, correctedContent, isBookmarked, messageMemo);
+        return Message.of(chat, MessageType.valueOf(role), content, correctedContent, isBookmarked, messageMemo);
     }
 
 }

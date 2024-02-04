@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,10 +25,11 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public List<MessageDto> searchMessages(Long chatId) {
-        return messageRepository.findByChat_ChatId(chatId)
-                .stream().map(MessageDto::from)
+        return messageRepository.findByChat_ChatId(chatId).stream()
+                .map(MessageDto::from)
                 .toList();
     }
+
 
     @Transactional
     public void saveMessages(MessageDto messageDto) {

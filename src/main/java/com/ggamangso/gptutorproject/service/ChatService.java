@@ -30,8 +30,8 @@ public class ChatService {
     }
 
     @Transactional
-    public ChatDto searchChat(String firstMessage){
-        return ChatDto.from(chatRepository.findByFirstMessage(firstMessage));
+    public ChatDto searchChat(Long chatId){
+        return ChatDto.from(chatRepository.findByChatId(chatId));
     }
 
 

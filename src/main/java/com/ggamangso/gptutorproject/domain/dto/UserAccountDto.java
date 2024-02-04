@@ -12,7 +12,7 @@ public record UserAccountDto(
 
         String userId,
         String userPassword,
-        AuthorityType authority,
+        String authority,
         String email,
         String nickname,
         String memo,
@@ -20,11 +20,11 @@ public record UserAccountDto(
         LocalDateTime updated_at
 ) {
 
-    public static UserAccountDto of(String userId, String userPassword, AuthorityType authority, String email, String nickname, String memo, LocalDateTime created_at, LocalDateTime updated_at) {
+    public static UserAccountDto of(String userId, String userPassword, String authority, String email, String nickname, String memo, LocalDateTime created_at, LocalDateTime updated_at) {
         return new UserAccountDto(userId, userPassword, authority, email, nickname, memo, created_at, updated_at);
     }
 
-    public static UserAccountDto of(String userId, String userPassword, AuthorityType authority, String email, String nickname, String memo )
+    public static UserAccountDto of(String userId, String userPassword, String authority, String email, String nickname, String memo )
     {
         return new UserAccountDto(userId, userPassword, authority, email, nickname, memo, null,null);
     }
@@ -33,7 +33,7 @@ public record UserAccountDto(
         return UserAccountDto.of(
                 entity.getUserId(),
                 entity.getUserPassword(),
-                entity.getAuthority(),
+                entity.getAuthority().toString(),
                 entity.getEmail(),
                 entity.getNickname(),
                 entity.getMemo(),
@@ -46,11 +46,10 @@ public record UserAccountDto(
         return UserAccount.of(
                 userId,
                 userPassword,
-                authority,
+                AuthorityType.valueOf(authority),
                 email,
                 nickname,
                 memo
         );
     }
-
 }
