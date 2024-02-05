@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <thlogic>
-
+    <attr sel="#header" th:replace="header :: header" />
+    <attr sel="#footer" th:replace="footer :: footer" />
+    <attr sel="#sign-up" th:href="@{/signup}"/>
+    <attr sel="#find-password" th:href="@{/auth/find_password}"/>
 </thlogic>
