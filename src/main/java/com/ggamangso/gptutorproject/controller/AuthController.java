@@ -51,7 +51,7 @@ public class AuthController {
         try {
             userAccountService.saveUser(
                     userAccountDto.userId(),
-                    passwordEncoder.encode(userAccountDto.userPassword()),
+                    userAccountDto.userPassword(),
                     userAccountDto.authority(),
                     userAccountDto.email(),
                     userAccountDto.nickname(),
@@ -70,4 +70,9 @@ public class AuthController {
         return "chats/myPage";
     }
 
+    @GetMapping("/auth/find_password")
+    public String findPassword(){
+
+        return "authorization/findPassword";
+    }
 }
