@@ -1,0 +1,17 @@
+ul{
+    list-style-type: none;
+    justify-content: space-between;
+}
+li{
+    width: 30%;
+    text-align: center;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+#logo{
+    display: flex;
+    justify-content: center;
+
+}
