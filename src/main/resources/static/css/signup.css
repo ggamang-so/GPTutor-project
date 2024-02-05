@@ -1,6 +1,7 @@
-.signup-box{
+#container{
 
 }
 #duplicate_check_label{
     display: none;
+    line-height: 38px;
 }
