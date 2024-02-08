@@ -1,44 +1,53 @@
-body {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-}
-
 html {
     height: -webkit-fill-available;
 }
-
-main {
-    height: 100vh;
-    max-height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
-
-
+body{
+    height:100vh;
 }
-#messages_list{
-    max-width: 80vw;
-    min-height: 100vh;
+main {
+    overflow-x: hidden;
+}
+#message_container{
+    display : flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: calc(100vh - 130px);
+}
+#scroll_container {
+    margin: 0 auto;
+    overflow-y: auto;
+    height: calc(100vh - 130px);
+    max-width: 900px;
+    width: 100%;
+}
+#scroll_container::-webkit-scrollbar {
+    display: none;
+}
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+.chat_box{
+    width: 300px;
+    border-right: solid 2px dimgray;
+    height: calc(100vh - 130px);
+    align-self: stretch;
 }
 .chat_container{
-    display: grid;
-    grid-template-columns: 380px auto;
+    display: flex;
     width:100vw;
-    height: 80vh;
+    height: 100%
 }
-.bg-body-tertiary{
-    border-right: solid 2px dimgray;
-    flex :1 1 0;
-    height: 100%;
+#recoding_box{
+    width: 100%;
+    max-width: 900px;
+    margin : 0 auto;
 }
 footer,header{
     width: 100vw;
-}
-
-.USER{
-    background-color: red;
-}
-.ASSISTANT{
-    background-color: cornflowerblue;
 }
 
 .chat-online {
@@ -49,12 +58,7 @@ footer,header{
     color: #e4606d
 }
 
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    max-height: 800px;
-    overflow-y: scroll
-}
+
 
 .chat-message-left,
 .chat-message-right {

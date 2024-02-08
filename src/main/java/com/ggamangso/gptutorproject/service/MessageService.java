@@ -43,15 +43,4 @@ public class MessageService {
         }
     }
 
-    public void deleteMessages(Long id) {
-        messageRepository.deleteById(id);
-
-    }
-
-
-
-    public MessageResponse CorrectingContent(String content){
-
-        return null;
-    }
 }

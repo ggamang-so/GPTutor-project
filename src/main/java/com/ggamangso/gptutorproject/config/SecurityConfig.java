@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .mvcMatchers("/signup/**", "/login", "/").permitAll()
+                        .mvcMatchers("/signup/**", "/","/api/**").permitAll()
                         .mvcMatchers("/mypage").hasRole("ROLE_USER")
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/loginForm").permitAll()

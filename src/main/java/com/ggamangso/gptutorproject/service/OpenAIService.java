@@ -27,22 +27,29 @@ public class OpenAIService {
     @PostConstruct
     public void init() {
         System.out.println("init에서 조회 : "+apiKey);
-        client = WebClient.builder()
-//                .baseUrl("http://localhost:9090/chats/post_test")
-                .baseUrl("https://api.openai.com/v1/chat/completions")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("Authorization", "Bearer " + apiKey)
-                .build();
+
+
     }
 
 
     public ChatResponse correctingContent(ChatRequest request) {
-        init();
-        return client.post()
+        client = WebClient.builder()
+                .baseUrl("https://api.openai.com/v1/chat/completions")
+                .build();
+        System.out.println("correctingContent에서 조회 : "+apiKey);
+        ChatResponse chatResponse = client.post()
+                .headers(header->{
+                    header.setBearerAuth(apiKey);
+                    header.setContentType(MediaType.APPLICATION_JSON);
+                })
                 .body(Mono.just(request), ChatRequest.class)
                 .retrieve()
                 .bodyToMono(ChatResponse.class)
                 .block();
+
+        System.out.println(client.toString());
+        log.debug("String", client);
+        return chatResponse;
     }
 
 }

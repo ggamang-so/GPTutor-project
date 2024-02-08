@@ -79,9 +79,9 @@ public class ChatController {
         return "/chats/test";
     }
 
-    @PostMapping("/chats/openAI_ok")
+    @PostMapping("/api/chats/openAI_ok")
     @ResponseBody
-    public ModelAndView ChatGPT(@RequestParam String quest, ModelAndView mav) {
+    public String ChatGPT(@RequestParam String quest, ModelAndView mav) {
         String response = openAIService.correctingContent(ChatRequest.of(
                 OpenAIConfig.MODEL,
                 List.of(MessageRequest.of(MessageType.SYSTEM, "You are a helpful assistant."),
@@ -91,10 +91,7 @@ public class ChatController {
                 OpenAIConfig.TOP_P
         )).choices().messageResponse().content();
 
-        mav.addObject("response", response);
-        mav.addObject("quest", quest);
-        mav.setViewName("chats/test");
-        return mav;
+        return response;
     }
 
     @PostMapping("/chats/post_test")
