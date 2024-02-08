@@ -2,23 +2,133 @@
 <html lang="ko">
 <head>
     <title>Title</title>
-    <script>
-    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/new.css">
 </head>
-<body>
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+    function mediaStart(){
+        let record = document.getElementById("record");
+        let stop = document.getElementById("stop");
+        console.log(navigator.mediaDevices);
+        if(navigator.mediaDevices){
+            console.log("미디어장치있음");
+            const constraints = {audio:true};
+            let chunks =[];//녹음된 내용을 저장할 변수
+
+            //정상구현
+            navigator.mediaDevices.getUserMedia(constraints).then(MediaStream=>{
+                //녹음을 시작하고 종료하는 객체
+                const mediaRecorder = new MediaRecorder(MediaStream);
+                //녹음시작
+                record.onclick = ()=>{
+                    chunks = [];//이전에 녹음된 내용이 있으면 초기화
+                    mediaRecorder.start();// 녹음 start
+                    //녹음 시작되면 녹음 시작 버튼 비활성화
+                    record.style.backgroundColor = "red";
+                    record.style.color = "#fff";
+                    record.disabled = true;
+
+                }
+                //음성저장하는 함수
+                mediaRecorder.ondataavailable = e => {
+
+                    if (e.data.size > 0) {
+                        chunks.push(e.data)
+                    }
+                }
+
+                //녹음 종료
+                stop.onclick = () =>{
+                    mediaRecorder.stop();
+                    record.style.background = "";
+                    record.style.color = "";
+                    record.disabled = false;
+                }
+                //녹음이 완료되면 서버로 녹음 내용을 보내고 결과를 받는다
+                mediaRecorder.onstop = () => {
+                    //chunks배열에 저장된 음성데이터를 바이너리코드로 변환환다.
+
+                    const blob = new Blob(chunks, {type: "audio/webm"});
+
+                    //바이너리코드로 변환한 음성파일을 폼에다 담아서 서버로 전송
+                    let formdata = new FormData();
+                    formdata.append("file", blob);
+                    //비동기식으로 ajax실행하기
+                    let xhr = new XMLHttpRequest();
+                    console.log(formdata)
+
+                    //1. 서버에서 결과를 받으면 처리할 이벤트
+                    xhr.onload = () => {
+                        console.log("xhr onload")
+                        if (xhr.status == 200) {//정상적으로 전송받으면
+                            //xhr.response : 받은 결과값이 들어있는 변수
+                            console.log(xhr.response);
+                            resultView.innerHTML = resultView.innerHTML + "<div>" + xhr.response.choices[0].message.content + "</div>";
+                        }
+                    }
+                    //2. 서버열기
+                    xhr.open("post", "speaking_record_ok", true);
+                    //3. 서버에 전송하기
+                    xhr.send(formdata);
+
+                };
+            }).catch(err=>{
+                console.log(err);
+            });
+
+
+
+            //정상구현 안됐을 경우
+        }else{
+            console.log("미디어장치없음");
+        }
+
+    }//mediaStart()
+
+    $(function(){
+        $("#send").click(function(){
+            let quest = document.getElementById("quest").value
+            if(quest === ""){
+                alert("메시지를 입력해주세요");
+                return false;
+            }
+            console.log(quest);
+            $.ajax({
+                url: '/api/chats/openAI_ok', // 실제 AJAX 요청을 처리할 엔드포인트
+                type: 'POST',
+                data: {"quest": quest},// 또는 'POST', 요청 유형에 따라 설정
+                success: function (response) {
+                    console.log(esponse) // 요청 결과를 표시할 요소
+                    if (response > 0) {
+                        alert("이미 사용중인 ID 입니다.");
+                    }
+                },
+                error: function () {
+                    alert('에러 발생');
+                }
+            });
+
+
+
+
+        })
+    })
+
+</script>
+<body onload="mediaStart()">
+
 
 <header id="header">
     <hr>
 </header>
 <main>
     <div class="chat_container">
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary chat_box">
             <a href="/"
                class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
                 <span class="fs-5 fw-semibold"> Chat List</span>
@@ -43,39 +153,43 @@
             </div>
         </div>
 
-        <div class="position-relative">
-            <div class="chat-messages p-4" id="messages_list">
-                <div class="chat-role">
-                    <div>
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1"
-                             alt="Chris Wood" width="40" height="40">
-                        <div class="text-muted small text-nowrap mt-2">2:33 am</div>
+        <div id="message_container">
+            <div id="scroll_container">
+                <div class="chat-messages p-4" id="messages_list">
+                    <div class="chat-role">
+                        <div>
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1"
+                                 alt="Chris Wood" width="40" height="40">
+                            <div class="text-muted small text-nowrap mt-2">2:33 am</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                            <div class="font-weight-bold mb-1">You</div>
+                            <span class="chat-content"> Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.</span>
+                        </div>
                     </div>
-                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                        <div class="font-weight-bold mb-1">You</div>
-                        <span class="chat-content"> Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.</span>
-                    </div>
-                </div>
 
-                <div class="chat-message-left pb-4">
-                    <div>
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1"
-                             alt="Sharon Lessman" width="40" height="40">
-                        <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-                    </div>
-                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                        <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                        Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+                    <div class="chat-message-left pb-4">
+                        <div>
+                            <div class="text-muted small text-nowrap mt-2">2:34 am</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                            <div class="font-weight-bold mb-1">Sharon Lessman</div>
+                            Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="flex-grow-0 py-3 px-4 border-top">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Type your message">
-                <button class="btn btn-primary">Send</button>
+
+            <div class="flex-grow-0 py-3 px-4 border-top" id="recoding_box">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Type your message" id="quest">
+                    <button class="btn btn-primary" id="send" >Send</button>
+                    <button class="btn btn-warning" id="record">record</button>
+                    <button class="btn btn-danger" id="stop">stop</button>
+                </div>
             </div>
         </div>
+
     </div>
 
 </main>
