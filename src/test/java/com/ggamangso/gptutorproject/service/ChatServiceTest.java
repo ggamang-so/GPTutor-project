@@ -1,6 +1,5 @@
 package com.ggamangso.gptutorproject.service;
 
-import com.ggamangso.gptutorproject.config.OpenAIConfig;
 import com.ggamangso.gptutorproject.constant.AuthorityType;
 import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;

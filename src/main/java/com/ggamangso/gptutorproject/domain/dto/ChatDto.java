@@ -4,9 +4,6 @@ import com.ggamangso.gptutorproject.domain.Chat;
 import com.ggamangso.gptutorproject.domain.UserAccount;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * DTO for {@link Chat}

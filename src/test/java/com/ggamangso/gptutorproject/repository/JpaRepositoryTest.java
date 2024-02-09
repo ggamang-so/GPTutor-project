@@ -1,10 +1,8 @@
 package com.ggamangso.gptutorproject.repository;
 
-import com.ggamangso.gptutorproject.config.JpaConfig;
 import com.ggamangso.gptutorproject.constant.AuthorityType;
 import com.ggamangso.gptutorproject.domain.Message;
 import com.ggamangso.gptutorproject.domain.UserAccount;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.Optional;

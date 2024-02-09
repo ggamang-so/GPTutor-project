@@ -1,23 +1,18 @@
 package com.ggamangso.gptutorproject.controller;
 
 import com.ggamangso.gptutorproject.config.TestSecurityConfig;
-import com.ggamangso.gptutorproject.repository.ChatRepository;
-import com.ggamangso.gptutorproject.repository.UserAccountRepository;
 import com.ggamangso.gptutorproject.service.ChatService;
 import com.ggamangso.gptutorproject.service.GoogleSTTService;
 import com.ggamangso.gptutorproject.service.MessageService;
 import com.ggamangso.gptutorproject.service.OpenAIService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
