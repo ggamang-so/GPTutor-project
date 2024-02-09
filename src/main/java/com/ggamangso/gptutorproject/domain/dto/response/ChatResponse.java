@@ -9,11 +9,11 @@ public record ChatResponse(
         String object,
         Long created,
         String model,
-        ChoiceResponse choices,
+        List<ChoiceResponse> choices,
         @JsonProperty("system_fingerprint") String systemFingerprint,
         UsageResponse usage
 ) {
-    public static ChatResponse of(String id, String object, Long created, String model, ChoiceResponse choices, @JsonProperty("system_fingerprint") String systemFingerprint, UsageResponse usage) {
+    public static ChatResponse of(String id, String object, Long created, String model, List<ChoiceResponse> choices, @JsonProperty("system_fingerprint") String systemFingerprint, UsageResponse usage) {
         return new ChatResponse(id, object, created, model, choices, systemFingerprint, usage);
     }
 
