@@ -3,17 +3,15 @@ package com.ggamangso.gptutorproject.service;
 import com.ggamangso.gptutorproject.domain.Chat;
 import com.ggamangso.gptutorproject.domain.Message;
 import com.ggamangso.gptutorproject.domain.dto.MessageDto;
-import com.ggamangso.gptutorproject.domain.dto.response.MessageResponse;
 import com.ggamangso.gptutorproject.repository.ChatRepository;
 import com.ggamangso.gptutorproject.repository.MessageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
