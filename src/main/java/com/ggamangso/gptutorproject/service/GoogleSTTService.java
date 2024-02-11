@@ -15,6 +15,7 @@ import java.util.List;
 public class GoogleSTTService {
 
     public String STTConvert(MultipartFile file){ // 입력된 multipartFile을 google STT api로 보내 Text로 변환하여 받음
+        log.info("STTconvert");
         StringBuilder convertedText = new StringBuilder();
         try(SpeechClient speech = SpeechClient.create()) {
             ByteString audioBytes = ByteString.copyFrom(file.getBytes());

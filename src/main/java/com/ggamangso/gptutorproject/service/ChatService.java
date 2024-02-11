@@ -1,9 +1,13 @@
 package com.ggamangso.gptutorproject.service;
 
+import com.ggamangso.gptutorproject.config.OpenAIConfig;
+import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;
+import com.ggamangso.gptutorproject.domain.Message;
 import com.ggamangso.gptutorproject.domain.UserAccount;
 import com.ggamangso.gptutorproject.domain.dto.ChatDto;
 import com.ggamangso.gptutorproject.repository.ChatRepository;
+import com.ggamangso.gptutorproject.repository.MessageRepository;
 import com.ggamangso.gptutorproject.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,20 +21,21 @@ import java.util.List;
 @Transactional
 @Service
 public class ChatService {
+    private final MessageRepository messageRepository;
     private final UserAccountRepository userAccountRepository;
     private final ChatRepository chatRepository;
 
     @Transactional(readOnly = true)
     public List<ChatDto> searchChats(String userId) {
 
-        return chatRepository.findByUserAccount_UserId(userId)
+        return chatRepository.findByUserAccount_UserIdOrderByChatIdDesc(userId)
                 .stream()
                 .map(ChatDto::from)
                 .toList();
     }
 
     @Transactional
-    public ChatDto searchChat(Long chatId){
+    public ChatDto searchChat(Long chatId) {
         return ChatDto.from(chatRepository.findByChatId(chatId));
     }
 
@@ -52,11 +57,21 @@ public class ChatService {
 
     }
 
-
-
-
-
-
+    @Transactional
+    public long createChat(String userId) {
+        UserAccount userAccount = userAccountRepository.getReferenceById(userId);
+        long chatId = chatRepository.save(Chat.of(userAccount, null)).getChatId();
+        Chat chat = chatRepository.getReferenceByChatId(chatId);
+        messageRepository.save(
+                Message.of(chat,
+                        MessageType.SYSTEM,
+                        OpenAIConfig.SYSTEM_MESSAGE,
+                        null,
+                        false,
+                        null
+                        ));
+        return chatId;
+    }
 
 
 }
