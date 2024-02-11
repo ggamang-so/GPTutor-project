@@ -36,7 +36,6 @@
                 }
                 //음성저장하는 함수
                 mediaRecorder.ondataavailable = e => {
-
                     if (e.data.size > 0) {
                         chunks.push(e.data)
                     }
@@ -54,13 +53,13 @@
                     //chunks배열에 저장된 음성데이터를 바이너리코드로 변환환다.
 
                     const blob = new Blob(chunks, {type: "audio/webm"});
-
                     //바이너리코드로 변환한 음성파일을 폼에다 담아서 서버로 전송
                     let formdata = new FormData();
                     formdata.append("file", blob);
+                    formdata.append("chatId", [[${chatId}]]);
                     //비동기식으로 ajax실행하기
                     let xhr = new XMLHttpRequest();
-                    console.log(formdata)
+                    console.log([[${chatId}]]);
 
                     //1. 서버에서 결과를 받으면 처리할 이벤트
                     xhr.onload = () => {
@@ -68,11 +67,10 @@
                         if (xhr.status == 200) {//정상적으로 전송받으면
                             //xhr.response : 받은 결과값이 들어있는 변수
                             console.log(xhr.response);
-                            resultView.innerHTML = resultView.innerHTML + "<div>" + xhr.response.choices[0].message.content + "</div>";
                         }
                     }
                     //2. 서버열기
-                    xhr.open("post", "speaking_record_ok", true);
+                    xhr.open("post", "/api/speaking_record_ok", true);
                     //3. 서버에 전송하기
                     xhr.send(formdata);
 
@@ -101,23 +99,25 @@
             $.ajax({
                 url: '/api/chats/openAI_ok', // 실제 AJAX 요청을 처리할 엔드포인트
                 type: 'POST',
-                data: {"quest": quest},// 또는 'POST', 요청 유형에 따라 설정
+                data: {"quest": quest,
+                        "chatId" : [[${chatId}]]},// 또는 'POST', 요청 유형에 따라 설정
                 success: function (response) {
-                    console.log(esponse) // 요청 결과를 표시할 요소
-                    if (response > 0) {
-                        alert("이미 사용중인 ID 입니다.");
-                    }
+                    console.log(response) // 요청 결과를 표시할 요소
+
                 },
                 error: function () {
                     alert('에러 발생');
                 }
             });
+        })
 
-
-
-
+        $("#new_chat").click(function(){
+            window.location.href = "/chats/new";
         })
     })
+
+
+
 
 </script>
 <body onload="mediaStart()">
@@ -129,10 +129,9 @@
 <main>
     <div class="chat_container">
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary chat_box">
-            <a href="/"
-               class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                <span class="fs-5 fw-semibold"> Chat List</span>
-            </a>
+            <div class="d-flex justify-content-end flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                <button class="btn btn-secondary" id="new_chat"> + 새 채팅 </button>
+            </div>
             <div class="list-group list-group-flush border-bottom scrollarea" id="chat_list">
                 <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
@@ -163,6 +162,7 @@
                             <div class="text-muted small text-nowrap mt-2">2:33 am</div>
                         </div>
                         <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                            <div class="font-weight-bold mb-1">bookmarked</div>
                             <div class="font-weight-bold mb-1">You</div>
                             <span class="chat-content"> Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.</span>
                         </div>

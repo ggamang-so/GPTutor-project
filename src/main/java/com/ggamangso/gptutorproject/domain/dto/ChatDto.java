@@ -13,7 +13,8 @@ public record ChatDto(
         UserAccountDto userAccountDto,
         String firstMessage,
         LocalDateTime created_at,
-        LocalDateTime updated_at) {
+        LocalDateTime updated_at
+) {
 
     public static ChatDto of(Long chatId, UserAccountDto userAccountDtos,String firstMessage, LocalDateTime created_at, LocalDateTime updated_at) {
         return new ChatDto(chatId, userAccountDtos,firstMessage, created_at, updated_at);
