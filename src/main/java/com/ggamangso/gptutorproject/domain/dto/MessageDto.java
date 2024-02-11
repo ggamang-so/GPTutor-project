@@ -44,7 +44,7 @@ public record MessageDto(
     }
 
     public Message toEntity(Chat chat){
-        return Message.of(chat, MessageType.valueOf(role), content, correctedContent, isBookmarked, messageMemo);
+        return Message.of(chat, MessageType.of(role), content, correctedContent, isBookmarked, messageMemo);
     }
 
 }

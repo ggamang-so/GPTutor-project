@@ -1,6 +1,5 @@
 package com.ggamangso.gptutorproject.service;
 
-import com.ggamangso.gptutorproject.config.OpenAIConfig;
 import com.ggamangso.gptutorproject.constant.AuthorityType;
 import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;
@@ -55,7 +54,7 @@ class ChatServiceTest {
         Chat expectChat1 = createChat(1L, "firstMessage1");
         Chat expectChat2 = createChat(2L, "firstMessage2");
         List<Chat> chats = List.of(expectChat1, expectChat2);
-        given(chatRepository.findByUserAccount_UserId(userId)).willReturn(chats);
+        given(chatRepository.findByUserAccount_UserIdOrderByChatIdDesc(userId)).willReturn(chats);
         //When
         List<ChatDto> actual = sut.searchChats(userId);
         //Then
@@ -66,7 +65,7 @@ class ChatServiceTest {
                         tuple(1L, "firstMessage1"),
                         tuple(2L, "firstMessage2")
                 );
-        then(chatRepository).should().findByUserAccount_UserId(userId);
+        then(chatRepository).should().findByUserAccount_UserIdOrderByChatIdDesc(userId);
     }
 
     @DisplayName("채팅ID를 입력하면, 채팅을 삭제한다. ")

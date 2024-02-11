@@ -23,4 +23,6 @@ public class OpenAIConfig {
 
     public static final String URL = "https://api.openai.com/v1/chat/completions";
 
+    public static final String SYSTEM_MESSAGE = "You are a helpful assistant.";
+
 }

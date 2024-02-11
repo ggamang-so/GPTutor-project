@@ -1,11 +1,11 @@
 package com.ggamangso.gptutorproject.domain;
-;
+
 import com.ggamangso.gptutorproject.constant.MessageType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @ToString(callSuper = true)

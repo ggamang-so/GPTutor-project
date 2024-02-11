@@ -8,7 +8,7 @@
             <attr sel="div[0]">
                 <attr sel="small" th:datetime="${chat.updated_at}" th:text="${#temporals.format(chat.updated_at, 'yyyy-MM-dd')}"/>
             </attr>
-            <attr sel="div[1]" th:text="${chat.firstMessage}"/>
+            <attr sel="div[1]" th:text="${chat.firstMessage}==null?'대화를 시작해주세요.':${chat.firstMessage}"/>
         </attr>
     </attr>
 
@@ -18,7 +18,8 @@
                 <attr sel="div" th:text="${#temporals.format(message.created_at, 'HH:mm')}"/>
             </attr>
             <attr sel="div[1]">
-                <attr sel="div" th:text="${message.role}"/>
+                <attr sel="div[0]" th:if="${message.isBookmarked}" th:text="bookmarked"/>
+                <attr sel="div[1]" th:text="${message.role}"/>
                 <attr sel=".chat-content" th:text="${message.content}"/>
             </attr>
         </attr>

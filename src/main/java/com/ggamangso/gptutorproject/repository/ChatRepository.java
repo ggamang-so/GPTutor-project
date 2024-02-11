@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 @RepositoryRestResource
 public interface ChatRepository extends JpaRepository<Chat, Long>, CustomRepository {
-    List<Chat> findByUserAccount_UserId(String userId);
+    List<Chat> findByUserAccount_UserIdOrderByChatIdDesc(String userId);
 
     void deleteByChatIdAndUserAccount_UserId(Long chatId, String userId);
 

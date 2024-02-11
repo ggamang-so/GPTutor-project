@@ -21,7 +21,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,7 +65,7 @@ class MessageServiceTest {
         given(messageRepository.save(any(Message.class))).willReturn(null);
 
         //When
-        sut.saveMessages(messageDto);
+        sut.saveMessage(messageDto);
         //Then
         then(chatRepository).should().getReferenceById(messageDto.chatDto().chatId());
         then(messageRepository).should().save(any(Message.class));
@@ -81,7 +80,7 @@ class MessageServiceTest {
         given(messageRepository.save(any(Message.class))).willReturn(null);
 
         //When
-        sut.saveMessages(messageDto);
+        sut.saveMessage(messageDto);
         //Then
         then(chatRepository).should().getReferenceById(messageDto.chatDto().chatId());
         then(messageRepository).should().save(any(Message.class));
@@ -96,7 +95,7 @@ class MessageServiceTest {
         given(messageRepository.save(any(Message.class))).willReturn(null);
 
         //When
-        sut.saveMessages(messageDto);
+        sut.saveMessage(messageDto);
         //Then
         then(chatRepository).should().getReferenceById(messageDto.chatDto().chatId());
         then(messageRepository).should().save(any(Message.class));

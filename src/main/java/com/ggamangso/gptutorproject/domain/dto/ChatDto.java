@@ -4,9 +4,6 @@ import com.ggamangso.gptutorproject.domain.Chat;
 import com.ggamangso.gptutorproject.domain.UserAccount;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * DTO for {@link Chat}
@@ -16,7 +13,8 @@ public record ChatDto(
         UserAccountDto userAccountDto,
         String firstMessage,
         LocalDateTime created_at,
-        LocalDateTime updated_at) {
+        LocalDateTime updated_at
+) {
 
     public static ChatDto of(Long chatId, UserAccountDto userAccountDtos,String firstMessage, LocalDateTime created_at, LocalDateTime updated_at) {
         return new ChatDto(chatId, userAccountDtos,firstMessage, created_at, updated_at);

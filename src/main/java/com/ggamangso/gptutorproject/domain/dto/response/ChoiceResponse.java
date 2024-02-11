@@ -6,11 +6,12 @@ import java.util.List;
 
 public record ChoiceResponse(
         Integer index,
-        MessageResponse messageResponse,
-        @JsonProperty("finish_reason") String finishReason
+        MessageResponse message,
+        @JsonProperty("finish_reason") String finishReason,
+        Object logprobs
 ) {
-    public static ChoiceResponse of(Integer index, MessageResponse messageResponse, @JsonProperty("finish_reason") String finishReason) {
-        return new ChoiceResponse(index, messageResponse, finishReason);
+    public static ChoiceResponse of(Integer index, MessageResponse message, @JsonProperty("finish_reason") String finishReason, Object logprobs) {
+        return new ChoiceResponse(index, message, finishReason, null);
     }
 
 
