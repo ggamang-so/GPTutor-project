@@ -4,7 +4,7 @@
     <attr sel="#footer" th:replace="footer :: footer" />
 
     <attr sel="#chat_list" th:remove="all-but-first">
-        <attr sel="a" th:each="chat : ${chats}" th:href="'/chats/'+${chat.chatId}">
+        <attr sel="a" th:each="chat : ${chats}" th:href="'/chats/'+${chat.chatId}"  th:classappend="${chat.chatId==chatId} ? 'selected':'' ">
             <attr sel="div[0]">
                 <attr sel="small" th:datetime="${chat.updated_at}" th:text="${#temporals.format(chat.updated_at, 'yyyy-MM-dd')}"/>
             </attr>
@@ -13,14 +13,22 @@
     </attr>
 
     <attr sel="#messages_list" th:object="${messages}" th:remove="all-but-first">
+
         <attr sel=".chat-role" th:each="message : ${messages}" th:class="${message.role}=='user'?'chat-message-right pb-4':'chat-message-left pb-4'">
             <attr sel="div[0]">
-                <attr sel="div" th:text="${#temporals.format(message.created_at, 'HH:mm')}"/>
-            </attr>
-            <attr sel="div[1]">
-                <attr sel="div[0]" th:if="${message.isBookmarked}" th:text="bookmarked"/>
-                <attr sel="div[1]" th:text="${message.role}"/>
-                <attr sel=".chat-content" th:text="${message.content}"/>
+                <attr sel="input[0]" th:value="${message.id}"/>
+                <attr sel="div[0]" th:if="${message.role=='assistant'}">
+                    <attr sel="img" th:src="@{/images/logo-circle-beige.png}" />
+                    <attr sel=".assistant" th:text="' '+ ${#authentication.name}+'님의 어시스턴트'"/>
+                </attr>
+                <attr sel=".contents" >
+                    <attr sel="span[0]" th:if="${message.role=='user'}"/>
+                    <attr sel="span[2]" th:if="${message.role=='user' && message.correctedContent!=null }"/>
+                    <attr sel=".chat-content" th:text="${message.content}"/>
+                    <attr sel=".chat-corrected" th:if="${message.role=='user' && message.correctedContent!=null }" th:text="${message.correctedContent}"/>
+                </attr>
+                <attr sel=".isBookmarked" th:value="${message.isBookmarked}?'true':''"/>
+                <attr sel=".fa-bookmark" th:if="${message.role=='user'}" th:classappend="${message.isBookmarked}?'fa-solid':'fa-regular'"/>
             </attr>
         </attr>
     </attr>

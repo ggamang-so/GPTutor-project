@@ -92,5 +92,30 @@ public class ChatController {
 
     }
 
+    @PostMapping("/api/chats/bookmark")
+    @ResponseBody
+    public boolean bookmark(@RequestParam long messageId,
+                         @RequestParam Boolean isBookmarked){
+        boolean isSuccess = false;
+        try{
+            isSuccess = !isBookmarked.equals(messageService.bookmarking(messageId, isBookmarked));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return isSuccess;
+
+    }
+
+    @GetMapping("/my-page/bookmark")
+    public String myPage(@AuthenticationPrincipal TutorPrincipal tutorPrincipal,
+                         ModelMap map){
+        String userId = tutorPrincipal.getUsername();
+       List<MessageDto> messageDtos =  messageService.searchBookmarkedMessages(userId);
+        System.out.println(messageDtos.size());
+        map.addAttribute("messages", messageDtos);
+        return "/chats/myPage";
+    }
+
 
 }
