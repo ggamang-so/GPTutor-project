@@ -122,6 +122,7 @@ public class MessageService {
                 .map(Chat::getChatId)
                 .map(messageRepository::findByChat_ChatId)
                 .flatMap(Collection::stream)
+                .filter(Message::getIsBookmarked)
                 .map(MessageDto::from)
                 .toList();
 
