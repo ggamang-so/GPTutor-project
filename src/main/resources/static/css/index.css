@@ -1,0 +1,22 @@
+#container{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+#login, #chat, #logout{
+    width : 200px;
+    font-weight: bolder;
+}
+#box{
+    margin: 300px auto;
+    min-height: 500px;
+    min-width: 400px;
+    justify-content: center;
+    border-radius: 20px;
+}
+#auth{
+    display: flex;
+    flex-direction: column;
+}

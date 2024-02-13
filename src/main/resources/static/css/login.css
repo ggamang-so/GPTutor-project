@@ -15,3 +15,7 @@ a {
     justify-content: center;
 
 }
+#header-list>li{
+    width: 20%;
+    min-width: 100px;
+}

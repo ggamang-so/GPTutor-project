@@ -5,3 +5,7 @@
     display: none;
     line-height: 38px;
 }
+#header-list>li{
+    width: 20%;
+    min-width: 100px;
+}

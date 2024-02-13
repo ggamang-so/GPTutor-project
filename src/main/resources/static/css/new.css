@@ -5,7 +5,7 @@ body{
     height:100vh;
 }
 main {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 #message_container{
     display : flex;
@@ -35,6 +35,10 @@ main {
     border-right: solid 2px dimgray;
     height: calc(100vh - 130px);
     align-self: stretch;
+    overflow-y: auto;
+}
+.chat_box::-webkit-scrollbar {
+    display: none;
 }
 .chat_container{
     display: flex;
@@ -111,8 +115,8 @@ footer,header{
 }
 .contents{
     background-color: #f3f7fc;
-    border-radius: 5px;
-    padding : 5px;
+    border-radius: 10px;
+    padding : 10px;
     flex-wrap: wrap;
 }
 .chat-message-right>div>.contents{
@@ -150,4 +154,8 @@ footer,header{
 }
 .border-top {
     border-top: 1px solid #dee2e6!important;
+}
+#header-list>li{
+    width: 20%;
+    min-width: 100px;
 }

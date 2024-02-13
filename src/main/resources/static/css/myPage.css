@@ -79,3 +79,7 @@ aside, main{
     color : #dee2e6;
     font-weight: bolder;
 }
+#header-list>li{
+    width: 20%;
+    min-width: 100px;
+}

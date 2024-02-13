@@ -18,7 +18,7 @@
 </header>
 <div class="container d-flex align-items-center py-4 bg-body-tertiary ">
     <main class="form-signing w-50 m-auto">
-            <div class="mb-5 mt-5" id="logo" ><img src="/img/logo-no-background.png" width="200px" alt="GPTutor Logo">
+            <div class="mb-5 mt-5" id="logo"><img id="logo-img" width="200px" alt="GPTutor Logo"/>
             </div>
             <h1 class="h3 mb-3 fw-norma text-center">Please sign in</h1>
         <form action="/login" method="POST" id="form-container" >
@@ -26,7 +26,7 @@
                 <input type="text" class="form-control" id="floatingInput" name="username" placeholder="user Id ">
                 <label for="floatingInput">User ID</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating  mt-2">
                 <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
