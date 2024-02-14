@@ -1,0 +1,46 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - feature/#23-cloudtype-deploy
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: ggamangso/gptutor-project
+          stage: main
+          yaml: |
+            name: gptutor-project
+            app: java@17
+            options:
+              ports: "9090"
+              env:
+                - name: DB_HOST
+                  value: mariadb
+                - name: DB_PORT
+                  value: "3306"
+                - name: DB_NAME
+                  value: board
+                - name: DB_USERNAME
+                  value: gptutor
+                - name: DB_PASSWORD
+                  value: test
+                - name: SPRING_PROFILES_ACTIVE
+                  value: prod
+                - name: API_KEY
+                  value: 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
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
