@@ -12,7 +12,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
-  config.activate.on-profile: ${PROFILE}
+  config.activate.on-profile: prod
   datasource:
     url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
