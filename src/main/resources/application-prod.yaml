@@ -2,8 +2,6 @@
 server:
   port: 9090
 
-
-
 debug: false
 management.endpoints.web.exposure.include: "*"
 
@@ -14,12 +12,12 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
+  config.activate.on-profile: ${PROFILE}
   datasource:
-    url: ${LOCAL_DB_URL}
-    username: ${LOCAL_DB_USERNAME}
-    password: ${LOCAL_DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: create
@@ -27,14 +25,11 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
-
     open-in-view: false
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   sql.init.mode: always
-
-
 
   data.rest:
     base-path: /api
@@ -43,21 +38,3 @@ spring:
     decoupled-logic: true
 
 openAI_key: ${API_KEY}
-
----
-spring:
-  config.activate.on-profile: ${PROFILE}
-  datasource:
-    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.mariadb.jdbc.Driver
-  sql.init.mode: always
-  jpa:
-    hibernate.ddl-auto: update
-    show-sql: true
-    defer-datasource-initialization: true
-    properties:
-      hibernate.format_sql: true
-      hibernate.default_batch_fetch_size: 100
-    open-in-view: false
