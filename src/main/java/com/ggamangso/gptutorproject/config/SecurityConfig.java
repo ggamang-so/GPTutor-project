@@ -24,7 +24,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/signup/**", "/","/api/**").permitAll()
-                        .requestMatchers("/mypage").permitAll()
+                        .requestMatchers("/my-page/**").permitAll()
+                        .requestMatchers("/favicon.ico", "/error").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/loginForm").permitAll()
                         .loginProcessingUrl("/login")
