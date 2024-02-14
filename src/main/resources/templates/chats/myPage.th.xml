@@ -1,1 +1,21 @@
 <?xml version="1.0"?>
+<thlogic>
+    <attr sel="#header" th:replace="header :: header"/>
+    <attr sel="#footer" th:replace="footer :: footer"/>
+
+    <attr sel=".message-list" th:remove="all-but-first" th:object="${messages}">
+        <attr sel=".message-box" th:each="message : ${messages}">
+            <attr sel=".messageId" th:value="${message.id}"/>
+            <attr sel=".contents">
+                <attr sel="span[2]" th:if="${message.correctedContent!=null }"/>
+                <attr sel=".chat-content" th:text="${message.content}"/>
+                <attr sel=".chat-corrected" th:if="${message.correctedContent!=null }"
+                      th:text="${message.correctedContent}"/>
+            </attr>
+            <attr sel=".isBookmarked" th:value="${message.isBookmarked}?'true':''"/>
+            <attr sel=".fa-bookmark" th:classappend="${message.isBookmarked}?'fa-solid':'fa-regular'"/>
+        </attr>
+    </attr>
+
+
+</thlogic>

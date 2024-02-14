@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#login" sec:authorize="!isAuthenticated()" th:href="@{/loginForm}"/>
+    <attr sel="#auth" sec:authorize="isAuthenticated()">
+        <attr sel="#nickname" sec:authentication="principal.nickname"/>
+        <attr sel="#welcome-comment" th:text="'님 환영합니다'"/>
+        <attr sel="#chat"  th:href="@{/chats}"/>
+        <attr sel="#logout"  th:href="@{/logout}"/>
+    </attr>
+
+</thlogic>

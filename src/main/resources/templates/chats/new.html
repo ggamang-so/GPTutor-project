@@ -5,33 +5,39 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/new.css">
+    <script src="https://kit.fontawesome.com/892ac48df4.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
 </head>
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
+
 
 <script th:inline="javascript">
-    function mediaStart(){
+    function mediaStart() {
         let record = document.getElementById("record");
         let stop = document.getElementById("stop");
+        let send = document.getElementById("send");
+        let input = document.getElementById("quest");
         console.log(navigator.mediaDevices);
-        if(navigator.mediaDevices){
+        if (navigator.mediaDevices) {
             console.log("미디어장치있음");
-            const constraints = {audio:true};
-            let chunks =[];//녹음된 내용을 저장할 변수
+            const constraints = {audio: true};
+            let chunks = [];//녹음된 내용을 저장할 변수
 
             //정상구현
-            navigator.mediaDevices.getUserMedia(constraints).then(MediaStream=>{
+            navigator.mediaDevices.getUserMedia(constraints).then(MediaStream => {
                 //녹음을 시작하고 종료하는 객체
                 const mediaRecorder = new MediaRecorder(MediaStream);
                 //녹음시작
-                record.onclick = ()=>{
+                record.onclick = () => {
                     chunks = [];//이전에 녹음된 내용이 있으면 초기화
                     mediaRecorder.start();// 녹음 start
                     //녹음 시작되면 녹음 시작 버튼 비활성화
-                    record.style.backgroundColor = "red";
-                    record.style.color = "#fff";
-                    record.disabled = true;
+                    record.style.display = "none";
+                    stop.style.display = "block";
+                    send.disabled = true;
+                    input.disabled = true;
+
 
                 }
                 //음성저장하는 함수
@@ -42,7 +48,7 @@
                 }
 
                 //녹음 종료
-                stop.onclick = () =>{
+                stop.onclick = () => {
                     mediaRecorder.stop();
                     record.style.background = "";
                     record.style.color = "";
@@ -66,32 +72,33 @@
                         console.log("xhr onload")
                         if (xhr.status == 200) {//정상적으로 전송받으면
                             //xhr.response : 받은 결과값이 들어있는 변수
-                            console.log(xhr.response);
+
                         }
                     }
                     //2. 서버열기
                     xhr.open("post", "/api/speaking_record_ok", true);
                     //3. 서버에 전송하기
                     xhr.send(formdata);
+                    window.location.reload();
 
                 };
-            }).catch(err=>{
+            }).catch(err => {
                 console.log(err);
             });
 
 
-
             //정상구현 안됐을 경우
-        }else{
+        } else {
             console.log("미디어장치없음");
         }
 
     }//mediaStart()
 
-    $(function(){
-        $("#send").click(function(){
+    $(function () {
+        scrollToBottom();
+        $("#send").click(function () {
             let quest = document.getElementById("quest").value
-            if(quest === ""){
+            if (quest === "") {
                 alert("메시지를 입력해주세요");
                 return false;
             }
@@ -99,8 +106,10 @@
             $.ajax({
                 url: '/api/chats/openAI_ok', // 실제 AJAX 요청을 처리할 엔드포인트
                 type: 'POST',
-                data: {"quest": quest,
-                        "chatId" : [[${chatId}]]},// 또는 'POST', 요청 유형에 따라 설정
+                data: {
+                    "quest": quest,
+                    "chatId": [[${chatId}]]
+                },// 또는 'POST', 요청 유형에 따라 설정
                 success: function (response) {
                     console.log(response) // 요청 결과를 표시할 요소
 
@@ -111,12 +120,51 @@
             });
         })
 
-        $("#new_chat").click(function(){
+        $("#new_chat").click(function () {
             window.location.href = "/chats/new";
+        })
+
+        $(".fa-bookmark").click(function () {
+            let bookmark = $(this)
+            let messageId = $(this).siblings(".messageId").val()
+            let isBookmarked = Boolean($(this).siblings('.isBookmarked').val());
+
+            $.ajax({
+                url: '/api/chats/bookmark', // 실제 AJAX 요청을 처리할 엔드포인트
+                type: 'POST',
+                data: {
+                    "messageId": messageId,
+                    "isBookmarked": isBookmarked
+                },// 또는 'POST', 요청 유형에 따라 설정
+                success: function (response) {
+                    console.log(response);
+                    // 요청 결과를 표시할 요소
+                    if (response) {
+                        if (isBookmarked) {
+                            bookmark.removeClass()
+                            bookmark.attr("class","fa-regular fa-bookmark mt-1");
+                            bookmark.siblings('.isBookmarked').val("");
+
+                        }else if (!isBookmarked) {
+                            bookmark.removeClass()
+                            bookmark.attr("class", "fa-solid fa-bookmark mt-1");
+                            bookmark.siblings('.isBookmarked').val("true");
+
+                        }
+                    }
+
+                },
+                error: function () {
+                    alert('에러 발생');
+                }
+            });
         })
     })
 
-
+    const scrollToBottom = () => {
+        const messages = document.getElementById('scroll_container');
+        messages.scrollTo(0, messages.scrollHeight);
+    }
 
 
 </script>
@@ -130,7 +178,7 @@
     <div class="chat_container">
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary chat_box">
             <div class="d-flex justify-content-end flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                <button class="btn btn-secondary" id="new_chat"> + 새 채팅 </button>
+                <button class="btn btn-secondary" id="new_chat"> + 새 채팅</button>
             </div>
             <div class="list-group list-group-flush border-bottom scrollarea" id="chat_list">
                 <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
@@ -155,37 +203,32 @@
         <div id="message_container">
             <div id="scroll_container">
                 <div class="chat-messages p-4" id="messages_list">
+                    <!--  message Box  -->
                     <div class="chat-role">
-                        <div>
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1"
-                                 alt="Chris Wood" width="40" height="40">
-                            <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-                        </div>
-                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                            <div class="font-weight-bold mb-1">bookmarked</div>
-                            <div class="font-weight-bold mb-1">You</div>
-                            <span class="chat-content"> Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.</span>
-                        </div>
-                    </div>
-
-                    <div class="chat-message-left pb-4">
-                        <div>
-                            <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-                        </div>
-                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                            <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                            Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+                        <div class="rounded py-2 px-3 mr-3 message-box">
+                            <input type="text" class="messageId" hidden/>
+                            <div class="font-weight-bold mb-1">
+                                <img width="30px" alt="assistant"/>
+                                <div class="assistant"></div>
+                            </div>
+                            <div class="contents">
+                                <span class="content-label">원문</span><span class="chat-content"> Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.</span>
+                                <span class="content-label">수정</span><span class="chat-corrected"> Corrected </span>
+                            </div>
+                            <input type="text" class="isBookmarked" hidden=""/>
+                            <i class="fa-bookmark mt-1"></i>
                         </div>
                     </div>
+                    <!--  message Box  -->
                 </div>
             </div>
 
             <div class="flex-grow-0 py-3 px-4 border-top" id="recoding_box">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Type your message" id="quest">
-                    <button class="btn btn-primary" id="send" >Send</button>
+                    <button class="btn btn-primary" id="send">Send</button>
                     <button class="btn btn-warning" id="record">record</button>
-                    <button class="btn btn-danger" id="stop">stop</button>
+                    <button class="btn btn-danger" id="stop" style="display: none">stop</button>
                 </div>
             </div>
         </div>

@@ -4,24 +4,31 @@ import com.ggamangso.gptutorproject.config.OpenAIConfig;
 import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;
 import com.ggamangso.gptutorproject.domain.Message;
+import com.ggamangso.gptutorproject.domain.UserAccount;
 import com.ggamangso.gptutorproject.domain.dto.MessageDto;
 import com.ggamangso.gptutorproject.domain.dto.request.ChatRequest;
 import com.ggamangso.gptutorproject.domain.dto.request.MessageRequest;
 import com.ggamangso.gptutorproject.repository.ChatRepository;
 import com.ggamangso.gptutorproject.repository.MessageRepository;
+import com.ggamangso.gptutorproject.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class MessageService {
+    private final UserAccountRepository userAccountRepository;
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
 
@@ -59,6 +66,14 @@ public class MessageService {
         List<MessageRequest> messages = new java.util.ArrayList<>(messageRepository.findByChat_ChatId(chatId)
                 .stream().map(MessageRequest::from)
                 .toList());
+
+        if(messages.size()>2) {
+            log.info(messages.get(1).toString());
+            messages.set(1, MessageRequest.of(messages.get(1).role(),
+                    firstPrompt(messages.get(1).content())));
+            log.info(messages.get(1).toString());
+        }
+
         messages.add(MessageRequest.of(MessageType.USER.getValue(), modifiedQuest));
         return ChatRequest.of(
                 OpenAIConfig.MODEL,
@@ -90,4 +105,29 @@ public class MessageService {
 
     }
 
+    public boolean bookmarking(long messageId, boolean isBookmarked) throws Exception {
+        Message message = messageRepository.findById(messageId).stream()
+                .findFirst()
+                .orElseThrow(Exception::new);
+        if(message.getIsBookmarked().equals(isBookmarked)){ // DB의 북마크여부와 프론트에서 온 북마크여부를 비교해서 같으면
+            message.setIsBookmarked(!message.getIsBookmarked()); // DB의 북마크 여부를 반대로 전환함
+            messageRepository.save(message);  // DB에 저장한 후
+            return message.getIsBookmarked(); // 전환한 북마크 여부를 반환함
+        }
+        return isBookmarked;//만약 DB랑 프론트에서 온 북마크여부가 서로 다르면 프론트 북마크여부를 반환한다.
+    }
+
+    public List<MessageDto> searchBookmarkedMessages(String userId) {
+        return chatRepository.findByUserAccount_UserIdOrderByChatIdDesc(userId).stream()
+                .map(Chat::getChatId)
+                .map(messageRepository::findByChat_ChatId)
+                .flatMap(Collection::stream)
+                .filter(Message::getIsBookmarked)
+                .map(MessageDto::from)
+                .toList();
+
+
+
+
+    }
 }
