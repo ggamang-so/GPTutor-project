@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <thlogic>
     <attr sel="#home" th:href="@{/}" />
-    <attr sel="#my-page" sec:authorize="isAuthenticated()" th:href="@{/my-page/bookmark}" />
+    <attr sel="#bookmark" sec:authorize="isAuthenticated()" th:href="@{/chats/bookmark}" />
     <attr sel="#chat-room"  th:href="@{/chats}" />
     <attr sel="#username" sec:authorize="isAuthenticated()" sec:authentication="principal.nickname" />
     <attr sel="#login" sec:authorize="!isAuthenticated()" th:href="@{/loginForm}" />
-<!--    <attr sel="#kakao-login" sec:authorize="!isAuthenticated()" th:href="@{/oauth2/authorization/kakao}" />-->
+    <attr sel="#kakao-login" sec:authorize="!isAuthenticated()" th:href="@{/oauth2/authorization/kakao}" />
     <attr sel="#logout" sec:authorize="isAuthenticated()" th:href="@{/logout}" />
 </thlogic>
