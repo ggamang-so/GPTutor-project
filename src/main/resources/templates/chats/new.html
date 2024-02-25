@@ -95,6 +95,17 @@
     }//mediaStart()
 
     $(function () {
+        let msg = [[${msg}]];
+        if(msg!==""&&msg!==null){
+            alert(msg)
+        }
+        let chatId = [[${chatId}]];
+        if(chatId === "" || chatId==null){
+            $(".input-group").children().prop("disabled", true);
+            $("#quest").attr("placeholder", "select chat or create new one");
+            console.log( );
+
+        }
         scrollToBottom();
         $("#send").click(function () {
             let quest = document.getElementById("quest").value
@@ -112,6 +123,7 @@
                 },// 또는 'POST', 요청 유형에 따라 설정
                 success: function (response) {
                     console.log(response) // 요청 결과를 표시할 요소
+                    window.location.reload();
 
                 },
                 error: function () {
@@ -142,10 +154,10 @@
                     if (response) {
                         if (isBookmarked) {
                             bookmark.removeClass()
-                            bookmark.attr("class","fa-regular fa-bookmark mt-1");
+                            bookmark.attr("class", "fa-regular fa-bookmark mt-1");
                             bookmark.siblings('.isBookmarked').val("");
 
-                        }else if (!isBookmarked) {
+                        } else if (!isBookmarked) {
                             bookmark.removeClass()
                             bookmark.attr("class", "fa-solid fa-bookmark mt-1");
                             bookmark.siblings('.isBookmarked').val("true");
@@ -159,6 +171,44 @@
                 }
             });
         })
+
+        $("#editing_chat_list").click(function () {
+            $(".editing").prop("hidden", false);
+            $(".normal").prop("hidden", true);
+        });
+
+        $("#back_to_normal").click(function () {
+            $(this).prop("hidden", true);
+            $(".normal").prop("hidden", false)
+            $(".editing").prop("hidden", true)
+        })
+
+        $("#deleting_chat").click(function () {
+            let checked_chat = $(".checked_chat:checked")
+            console.log("type : " + typeof checked_chat + "\n checked_chat : \n");
+            console.log(checked_chat);
+            if (checked_chat.length === 0) {
+                alert("체크된 채팅이 없습니다.");
+            }
+            if (checked_chat.length > 0) {
+                if (confirm("삭제된 채팅은 복구할 수 없습니다. 삭제하시겠습니까?")) {
+                    $("#chat_list_form").submit();
+                }
+            }
+        })
+
+        $("#checking_all").click(function (){
+            let isChecked = this.checked;
+            if(isChecked){
+                $(".checked_chat").prop("checked",true)
+            }
+            if(!isChecked){
+                $(".checked_chat").prop("checked",false)
+            }
+        })
+
+
+
     })
 
     const scrollToBottom = () => {
@@ -177,27 +227,28 @@
 <main>
     <div class="chat_container">
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary chat_box">
-            <div class="d-flex justify-content-end flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                <button class="btn btn-secondary" id="new_chat"> + 새 채팅</button>
+            <div class="d-flex justify-content-start p-3 ">
+                <i class="fa-solid fa-chevron-left editing" id="back_to_normal" hidden></i>
             </div>
-            <div class="list-group list-group-flush border-bottom scrollarea" id="chat_list">
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <small class="mb-1 updated_at"></small>
-                    </div>
-                    <div class="col-10 mb-1 strong">Some placeholder content in a paragraph below the heading and date.
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small class="text-body-secondary">Tues</small>
-                    </div>
-                    <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.
-                    </div>
-                </a>
-
+            <div class="d-flex justify-content-between flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+                <button class="btn btn-outline-dark normal" id="editing_chat_list"> 편집</button>
+                <button class="btn btn-danger editing" id="deleting_chat" hidden> 삭제</button>
+                <input type="checkbox" class="btn btn-light editing" id="checking_all" hidden/>
+                <button class="btn btn-secondary normal" id="new_chat"> + 새 채팅</button>
             </div>
+            <form id="chat_list_form">
+                <div class="list-group list-group-flush border-bottom scrollarea" id="chat_list">
+                    <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <small class="mb-1 updated_at"></small>
+                            <input type="checkbox" class="editing checked_chat" name="chatId" hidden/>
+                        </div>
+                        <div class="col-10 mb-1 strong first_message">Some placeholder content in a paragraph below the heading and
+                            date.
+                        </div>
+                    </a>
+                </div>
+            </form>
         </div>
 
         <div id="message_container">
@@ -225,10 +276,10 @@
 
             <div class="flex-grow-0 py-3 px-4 border-top" id="recoding_box">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Type your message" id="quest">
-                    <button class="btn btn-primary" id="send">Send</button>
-                    <button class="btn btn-warning" id="record">record</button>
-                    <button class="btn btn-danger" id="stop" style="display: none">stop</button>
+                    <input type="text" class="form-control" placeholder="Type your message" id="quest" />
+                    <button class="btn btn-primary" id="send" >Send</button>
+                    <button class="btn btn-warning" id="record" >record</button>
+                    <button class="btn btn-danger" id="stop" style="display: none" >stop</button>
                 </div>
             </div>
         </div>

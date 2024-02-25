@@ -6,6 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RepositoryRestResource
@@ -16,9 +17,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long>, CustomReposit
 
     Chat getReferenceByChatId(Long chatId);
 
-    Chat findByChatId(Long chatId);
+    Optional<Chat> findByChatId(Long chatId);
 
-    Chat findByFirstMessage(String firstMessage);
-
-
+    void deleteByChatId(Long chatId);
 }

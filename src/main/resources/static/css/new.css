@@ -159,3 +159,6 @@ footer,header{
     width: 20%;
     min-width: 100px;
 }
+.first_message {
+    overflow-x: hidden;
+}

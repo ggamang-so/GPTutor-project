@@ -1,0 +1,40 @@
+
+server:
+  port: 9090
+
+debug: false
+management.endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    com.ggamangso.gptutorproject: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+spring:
+  config.activate.on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+    open-in-view: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  sql.init.mode: always
+
+  data.rest:
+    base-path: /api
+    detection-strategy: annotated
+  thymeleaf3:
+    decoupled-logic: true
+
+openAI_key: ${API_KEY}

@@ -28,11 +28,11 @@ public class UserAccountService {
     public UserAccountDto saveUser(String username, String userPassword, String authority, String email, String nickname, String memo) {
         if(nickname.equals("")){
             return UserAccountDto.from(
-                    userAccountRepository.save(UserAccount.of(username, passwordEncoder.encode(userPassword),AuthorityType.valueOf(authority), email, username, memo))
+                    userAccountRepository.save(UserAccount.of(username, passwordEncoder.encode(userPassword),AuthorityType.of(authority), email, username, memo))
             );
         }
         return UserAccountDto.from(
-                userAccountRepository.save(UserAccount.of(username, passwordEncoder.encode(userPassword),AuthorityType.valueOf(authority), email, nickname, memo))
+                userAccountRepository.save(UserAccount.of(username, passwordEncoder.encode(userPassword),AuthorityType.of(authority), email, nickname, memo))
         );
     }
 

@@ -62,7 +62,9 @@ public class OpenAIService {
         log.info(correcting);
         log.info(response);
 
-       ChatDto chatDto = ChatDto.from(chatRepository.findByChatId(chatId));
+       ChatDto chatDto = ChatDto.from(chatRepository
+                                       .findByChatId(chatId)
+                                       .orElseThrow(NullPointerException::new));
 
         return List.of(MessageDto.of(chatDto, MessageType.USER.getValue(), quest, correcting, false, null),
                 MessageDto.of(chatDto, MessageType.ASSISTANT.getValue(), response, null, false, null));

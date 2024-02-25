@@ -2,11 +2,12 @@
 <thlogic>
     <attr sel="#header" th:replace="header :: header" />
     <attr sel="#footer" th:replace="footer :: footer" />
-
+    <attr sel="#chat_list_form" th:method="POST" th:action="@{/api/chats/delete}"/>
     <attr sel="#chat_list" th:remove="all-but-first">
         <attr sel="a" th:each="chat : ${chats}" th:href="'/chats/'+${chat.chatId}"  th:classappend="${chat.chatId==chatId} ? 'selected':'' ">
             <attr sel="div[0]">
                 <attr sel="small" th:datetime="${chat.updated_at}" th:text="${#temporals.format(chat.updated_at, 'yyyy-MM-dd')}"/>
+                <attr sel=".checked_chat" th:value="${chat.chatId}" />
             </attr>
             <attr sel="div[1]" th:text="${chat.firstMessage}==null?'대화를 시작해주세요.':${chat.firstMessage}"/>
         </attr>

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,15 +37,28 @@ public class ChatService {
 
     @Transactional
     public ChatDto searchChat(Long chatId) {
-        return ChatDto.from(chatRepository.findByChatId(chatId));
+        Optional<Chat> chat = chatRepository.findByChatId(chatId);
+        if(chat.isPresent()) {
+            return ChatDto.from(chat.get());
+        }else{
+            throw new NullPointerException("Not Found chat");
+        }
+
     }
 
 
     public void deleteChat(Long chatId, String userId) {
-        Chat chat = chatRepository.getReferenceByChatId(chatId);
-        chatRepository.deleteByChatIdAndUserAccount_UserId(chatId, userId);
-        chatRepository.flush();
+        String userIdOfChat = chatRepository.getReferenceByChatId(chatId).getUserAccount().getUserId();
+        if(userId.equals(userIdOfChat)){
+            chatRepository.deleteByChatId(chatId);
+        }
 
+    }
+
+    public void deleteChats(List<Long> chatIds, String userId) {
+        for(long chatId : chatIds){
+            deleteChat(chatId, userId);
+        }
     }
 
     public long saveChat(ChatDto chatDto) {
@@ -74,4 +88,9 @@ public class ChatService {
     }
 
 
+    public long searchChatFromMessageId(long messageId) {
+
+        return  messageRepository.findById(messageId)
+                .get().getChat().getChatId();
+    }
 }

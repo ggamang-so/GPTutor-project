@@ -4,7 +4,6 @@ import com.ggamangso.gptutorproject.config.OpenAIConfig;
 import com.ggamangso.gptutorproject.constant.MessageType;
 import com.ggamangso.gptutorproject.domain.Chat;
 import com.ggamangso.gptutorproject.domain.Message;
-import com.ggamangso.gptutorproject.domain.UserAccount;
 import com.ggamangso.gptutorproject.domain.dto.MessageDto;
 import com.ggamangso.gptutorproject.domain.dto.request.ChatRequest;
 import com.ggamangso.gptutorproject.domain.dto.request.MessageRequest;
@@ -17,11 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,18 +49,25 @@ public class MessageService {
             log.warn("메시지 저장 실패, 메시지 작성에 필요한 정보를 찾을 수 없습니다  -{}", e.getLocalizedMessage());
         }
         assert message != null;
-        return MessageDto.from(messageRepository.save(message));
+        log.info(message.toString());
+        message = messageRepository.save(message);
+        log.info(String.valueOf(message));
+        return MessageDto.from(message);
     }
 
-    public ChatRequest SetChatRequest(String quest, long chatId) {
+    public void setFirstMessage(String quest, long chatId) {
+        chatRepository.findByChatId(chatId).orElseThrow(NullPointerException::new).setFirstMessage(quest);
+    }
+    public ChatRequest setChatRequest(String quest, long chatId) {
         String modifiedQuest = "";
         if (isFirstMessage(chatId)) {
             modifiedQuest = firstPrompt(quest);
+            setFirstMessage(quest, chatId);
         }
         if (!isFirstMessage(chatId)) {
             modifiedQuest = promptModifying(quest);
         }
-        List<MessageRequest> messages = new java.util.ArrayList<>(messageRepository.findByChat_ChatId(chatId)
+        List<MessageRequest> messages = new ArrayList<>(messageRepository.findByChat_ChatId(chatId)
                 .stream().map(MessageRequest::from)
                 .toList());
 
@@ -73,7 +77,7 @@ public class MessageService {
                     firstPrompt(messages.get(1).content())));
             log.info(messages.get(1).toString());
         }
-
+        //TODO : 뭔가 중복되는 느낌 -> 리팩토링 해볼 것
         messages.add(MessageRequest.of(MessageType.USER.getValue(), modifiedQuest));
         return ChatRequest.of(
                 OpenAIConfig.MODEL,
@@ -116,6 +120,7 @@ public class MessageService {
         }
         return isBookmarked;//만약 DB랑 프론트에서 온 북마크여부가 서로 다르면 프론트 북마크여부를 반환한다.
     }
+
 
     public List<MessageDto> searchBookmarkedMessages(String userId) {
         return chatRepository.findByUserAccount_UserIdOrderByChatIdDesc(userId).stream()

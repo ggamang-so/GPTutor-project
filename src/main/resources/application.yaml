@@ -1,0 +1,81 @@
+
+server:
+  port: 9090
+
+
+
+debug: false
+management.endpoints.web.exposure.include: "*"
+
+logging:
+  level:
+    com.ggamangso.gptutorproject: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+spring:
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+
+    open-in-view: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  sql.init.mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_OAUTH_CLIENT_ID}
+            client-secret: ${KAKAO_OAUTH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+
+  data.rest:
+    base-path: /api
+    detection-strategy: annotated
+  thymeleaf3:
+    decoupled-logic: true
+
+openAI_key: ${API_KEY}
+
+---
+spring:
+  config.activate.on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb;mode=mysql
+    driver-class-name: org.h2.Driver
+  sql.init.mode: always
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: create
+    show-sql: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+      dialect: org.hibernate.dialect.MariaDB103Dialect
+
+    open-in-view: false
