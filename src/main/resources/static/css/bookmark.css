@@ -7,6 +7,7 @@ body{
 }
 main {
     overflow-x: hidden;
+    justify-content: center;
 }
 aside, main{
     height: calc(100vh - 130px);
@@ -16,6 +17,7 @@ aside, main{
     display: flex;
     flex-direction: row;
     margin : 0;
+    justify-content: center;
 }
 
 .message-list{
@@ -26,7 +28,7 @@ aside, main{
 .message-box{
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     flex-grow : 1;
     margin: 15px 15px 30px;
 
@@ -35,7 +37,7 @@ aside, main{
     margin: 0 auto;
     overflow-y: auto;
     height: calc(100vh - 130px);
-    max-width: 900px;
+    /*max-width: 900px;*/
     width: 100%;
 
 }
@@ -56,7 +58,7 @@ aside, main{
     padding : 5px;
     flex-wrap: wrap;
     background-color: #283a96;
-    min-width : 400px;
+    width : 850px;
 }
 
 .content-label{
@@ -82,4 +84,7 @@ aside, main{
 #header-list>li{
     width: 20%;
     min-width: 100px;
+}
+.bookmark_box{
+    width: 850px;
 }
