@@ -47,7 +47,7 @@ public class AuthController {
 
     @PostMapping("/signup/form")
     public String signupForm(UserAccountDto userAccountDto){
-
+        log.info(userAccountDto.toString() );
         try {
             userAccountService.saveUser(
                     userAccountDto.userId(),
@@ -60,15 +60,9 @@ public class AuthController {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "redirect:/chats";
+        return "redirect:/loginForm";
     }
 
-    @GetMapping("/mypage")
-    public String myPageView(ModelMap map){
-        map.addAttribute("Messages", "messageDto");
-
-        return "chats/myPage";
-    }
 
     @GetMapping("/auth/find_password")
     public String findPassword(){
