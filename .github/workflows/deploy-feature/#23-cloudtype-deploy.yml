@@ -9,11 +9,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Connect deploy key
         uses: cloudtype-github-actions/connect@v1
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
+
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:

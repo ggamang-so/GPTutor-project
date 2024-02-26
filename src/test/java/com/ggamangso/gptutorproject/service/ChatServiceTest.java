@@ -74,13 +74,12 @@ class ChatServiceTest {
         //Given
         String userId = "ggamangso";
         Long chatId = 1L;
-        willDoNothing().given(chatRepository).deleteByChatIdAndUserAccount_UserId(chatId, userId);
-        willDoNothing().given(chatRepository).flush();
+        willDoNothing().given(chatRepository).deleteByChatId(chatId);
+        given(chatRepository.getReferenceByChatId(chatId)).willReturn(createChat(chatId));
         //When
         sut.deleteChat(chatId, userId);
         //Then
-        then(chatRepository).should().deleteByChatIdAndUserAccount_UserId(chatId, userId);
-        then(chatRepository).should().flush();
+        then(chatRepository).should().deleteByChatId(chatId);
     }
 
     @DisplayName("첫 메시지를 입력하면, 채팅이 생성된다.")

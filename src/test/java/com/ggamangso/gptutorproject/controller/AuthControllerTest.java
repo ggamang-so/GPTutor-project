@@ -63,17 +63,5 @@ class AuthControllerTest {
 
     }
 
-    @WithMockUser
-    @DisplayName("[view][Get] 마이페이지 - 정상호출, 인증 사용자")
-    @Test
-    void givenAuthorizedUserAndChatId_when_then () throws Exception {
-        //Given
-        Long chat_id = 1L;
-        //When & Then
-        mvc.perform(get("/mypage"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(model().attributeExists("Messages"));
 
-    }
 }

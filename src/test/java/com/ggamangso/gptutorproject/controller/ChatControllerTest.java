@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -53,6 +54,20 @@ class ChatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(model().attributeExists("chats"));
+    }
+
+    @WithUserDetails(value = "unoTest", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][Get] 북마크 - 정상호출, 인증 사용자")
+    @Test
+    void givenAuthorizedUserAndChatId_when_then () throws Exception {
+        //Given
+
+        //When & Then
+        mvc.perform(get("/chats/bookmark"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(model().attributeExists("messages"));
+
     }
 
 //    @DisplayName("[view][Get] 특정 채팅 페이지 - chat_id와 함께 호출")
