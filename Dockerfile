@@ -14,7 +14,6 @@ RUN mv ${JAR_PATH}/*.jar ./app.jar
 ENV DB_USERNAME=gptutor
 ENV DB_PASSWORD=test
 ENV DB_URL=jdbc:mariadb://svc.sel5.cloudtype.app:30791/board
-ENV API_KEY=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
 
 LABEL authors="hyunwoo"
 
