@@ -24,7 +24,7 @@ jobs:
     - name: build and push Docker image
       uses: docker/build-push-action@v4
       env:
-        API_KET: ${{ secrets.API_KET }}
+        API_KEY: ${{ secrets.API_KEY }}
       with:
         push: true
         tags: ggamangso/gptutor:latest
