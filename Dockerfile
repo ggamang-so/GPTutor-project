@@ -15,6 +15,8 @@ ENV DB_USERNAME=gptutor
 ENV DB_PASSWORD=test
 ENV DB_URL=jdbc:mariadb://svc.sel5.cloudtype.app:30791/board
 ENV API_KEY=""
+ENV KAKAO_OAUTH_CLIENT_ID=""
+ENV KAKAO_OAUTH_CLIENT_SECRET=""
 
 LABEL authors="hyunwoo"
 

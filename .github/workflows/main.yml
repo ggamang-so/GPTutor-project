@@ -25,6 +25,9 @@ jobs:
       uses: docker/build-push-action@v4
       env:
         API_KEY: ${{ secrets.API_KEY }}
+        KAKAO_OAUTH_CLIENT_ID: ${{ secrets.KAKAO_OAUTH_CLIENT_ID }}
+        KAKAO_OAUTH_CLIENT_SECRET: ${{ KAKAO_OAUTH_CLIENT_SECRET }}
+
       with:
         push: true
         tags: ggamangso/gptutor:latest
