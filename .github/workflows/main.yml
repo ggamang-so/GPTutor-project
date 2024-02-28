@@ -21,8 +21,8 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build \
-            --build-arg KAKAO_CLIENT_ID=${{ secrets.KAKAO_OAUTH_CLIENT_ID }} \
-            --build-arg KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_OAUTH_CLIENT_SECRET }} \
-            --build-arg OPENAI_KEY=${{ secrets.API_KEY }} \
+            --build-arg KAKAO_OAUTH_CLIENT_ID=${{ secrets.KAKAO_OAUTH_CLIENT_ID }} \
+            --build-arg KAKAO_OAUTH_CLIENT_SECRET=${{ secrets.KAKAO_OAUTH_CLIENT_SECRET }} \
+            --build-arg API_KEY_KEY=${{ secrets.API_KEY }} \
             -t ggamangso/gptutor:latest .
           docker push ggamangso/gptutor:latest
