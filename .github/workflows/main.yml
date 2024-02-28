@@ -2,33 +2,27 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-
-  build:
-
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_KEY}}
-    
-    - name: build and push Docker image
-      uses: docker/build-push-action@v4
-      env:
-        API_KEY: ${{ secrets.API_KEY }}
-        KAKAO_OAUTH_CLIENT_ID: ${{ secrets.KAKAO_OAUTH_CLIENT_ID }}
-        KAKAO_OAUTH_CLIENT_SECRET: ${{ secrets.KAKAO_OAUTH_CLIENT_SECRET }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_KEY}}
 
-      with:
-        push: true
-        tags: ggamangso/gptutor:latest
-
+      - name: Build and push Docker image
+        run: |
+          docker build \
+            --build-arg KAKAO_CLIENT_ID=${{ secrets.KAKAO_OAUTH_CLIENT_ID }} \
+            --build-arg KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_OAUTH_CLIENT_SECRET }} \
+            --build-arg OPENAI_KEY=${{ secrets.API_KEY }} \
+            -t ggamangso/gptutor:latest .
+          docker push ggamangso/gptutor:latest
