@@ -5,6 +5,9 @@ WORKDIR /app
 # COPY만  docker-compose 파일의 위치를 기반으로 작동함
 COPY . .
 
+ARG API_KEY
+ARG KAKAO_OAUTH_CLIENT_SECRET
+
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
 
