@@ -33,3 +33,13 @@ jobs:
             -t ggamangso/gptutor:latest .
           docker push ggamangso/gptutor:latest
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: SSH into EC2 and run Docker container
+        run: |
+          aws ec2 run-command --instance-id ${{ secrets.EC2_INSTANCE_ID }} --document-name "AWS-RunShellScript" --comment "Run Docker container" --parameters "commands=bash run_docker.sh" --region "ap-northeast-2" --profile "gptutor-profile"
