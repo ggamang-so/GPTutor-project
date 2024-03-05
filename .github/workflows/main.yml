@@ -40,6 +40,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
 
-      - name: SSH into EC2 and run Docker container
-        run: |
-          aws ec2 run-command --instance-id ${{ secrets.EC2_INSTANCE_ID }} --document-name "AWS-RunShellScript" --comment "Run Docker container" --parameters "commands=bash run_docker.sh" --region "ap-northeast-2" --profile "gptutor-profile"
+      - name: SSH into EC2 and pull Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: 54.180.98.51
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            docker pull your_dockerhub_username/your_docker_image:latest
+            docker stop your_container_name || true
+            docker rm your_container_name || true
+            docker run -d  -p 8080:9090 ggamangso/gptutor:latest
