@@ -47,7 +47,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/gptutor:latest
-            docker stop gptutor || true
-            docker rm gptutor || true
-            docker run -d --name gptutor -p 8080:9090 ${{ secrets.DOCKER_USERNAME }}/gptutor:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gptutor:latest
+            sudo docker stop gptutor || true
+            sudo docker rm gptutor || true
+            sudo docker run -d --name gptutor -p 8080:9090 ${{ secrets.DOCKER_USERNAME }}/gptutor
