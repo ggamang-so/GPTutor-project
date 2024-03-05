@@ -47,7 +47,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            docker pull your_dockerhub_username/your_docker_image:latest
-            docker stop your_container_name || true
-            docker rm your_container_name || true
-            docker run -d  -p 8080:9090 ggamangso/gptutor:latest
+            docker pull ggamangso/gptutor:latest
+            docker stop gptutor || true
+            docker rm gptutor || true
+            docker run -d --name gpgutor -p 8080:9090 ggamangso/gptutor:latest
