@@ -1,6 +1,16 @@
 
 server:
-  port: 9090
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: test1234
+    key-alias: tomcat
+    http2:
+      enabled: troe
+  error:
+    include-message: always
+    include-stacktrace: never
 
 debug: false
 management.endpoints.web.exposure.include: "*"
