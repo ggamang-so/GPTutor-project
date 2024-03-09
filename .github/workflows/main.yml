@@ -43,7 +43,7 @@ jobs:
       - name: SSH into EC2 and pull Docker image
         uses: appleboy/ssh-action@master
         with:
-          host: 54.180.98.51
+          host: 13.124.221.198
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
