@@ -50,4 +50,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gptutor:latest
             sudo docker stop gptutor || true
             sudo docker rm gptutor || true
-            sudo docker run -d --name gptutor -p 443:443 ${{ secrets.DOCKER_USERNAME }}/gptutor
+            sudo docker run -d --name gptutor -p 443:443 -v /etc/credentials:/etc/credentials -t ${{ secrets.DOCKER_USERNAME }}/gptutor
