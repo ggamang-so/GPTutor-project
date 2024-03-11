@@ -79,7 +79,6 @@
                     xhr.open("post", "/api/speaking_record_ok", true);
                     //3. 서버에 전송하기
                     xhr.send(formdata);
-                    window.location.reload();
 
                 };
             }).catch(err => {
@@ -91,6 +90,7 @@
         } else {
             console.log("미디어장치없음");
         }
+        window.location.reload();
 
     }//mediaStart()
 
