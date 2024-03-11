@@ -72,7 +72,7 @@
                         console.log("xhr onload")
                         if (xhr.status == 200) {//정상적으로 전송받으면
                             //xhr.response : 받은 결과값이 들어있는 변수
-
+                            window.location.reload();
                         }
                     }
                     //2. 서버열기
@@ -90,7 +90,7 @@
         } else {
             console.log("미디어장치없음");
         }
-        window.location.reload();
+
 
     }//mediaStart()
 
